@@ -28,7 +28,7 @@ class User:
         return self
 
     def __str__(self):
-        return "{0} | {1} | {2}".format(self.name,self.email,self.password)
+        return "NAME: {0}, EMAIL: {1}, PSW: {2}".format(self.name,self.email,self.password)
 
     def addToOwned(self,tool):
         self.owned.append(tool)

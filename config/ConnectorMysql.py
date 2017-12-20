@@ -9,11 +9,6 @@ class Connector:
         self.db = pymysql.connect("localhost","adminSharedPower","password","SharedPower_db" )
         # Create cursor object
         self.cursor = self.db.cursor()
-        # execute SQL query using execute() method.
-        self.cursor.execute("SELECT VERSION()")
-        # Fetch a single row using fetchone() method.
-        data = self.cursor.fetchone()
-        print("Database version : %s " % data)
 
 
 
