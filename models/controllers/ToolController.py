@@ -1,6 +1,5 @@
 from config.ConnectorMysql import Connector
 
-#TODO: ALL CLASS
 from models.ToolModel import Tool
 
 
@@ -53,7 +52,3 @@ class ToolController:
             tool = Tool(row[0], row[1], row[2], row[3])
         return tool
 
-x=ToolController()
-#y=Tool("y","mati",20.1,12.2)
-#x.saveToolToDatabase(y)
-x.findAllTools()
