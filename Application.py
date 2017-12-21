@@ -11,8 +11,8 @@ from config.DatabaseCreator import DatabaseCreator
 #-----------------
 
 
-#user = User("mati","adfasf","aswww")
-#user.saveUser()
+user = User("mati","adfasf","aswww")
+user.saveUser()
 #tab=UserController().findAllUsers()
 #user2=tab[1]
 #print(user2)
