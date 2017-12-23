@@ -15,7 +15,6 @@ class ToolController:
         try:
             self.cursor.execute(toolDatabaseObject)
             self.database.commit()
-            print("Tool: {0}_{1} saved to database".format(tool.name,tool.owner))
         except:
             self.database.rollback()
             print("ERROR! while saving a tool to db")
@@ -25,7 +24,6 @@ class ToolController:
         sql="DELETE FROM TOOLS WHERE NAME = '%s'" % (tool.name)
         try:
             self.cursor.execute(sql)
-            print("Tool {0} deleted from database".format(tool.name))
             self.database.commit()
         except:
             self.database.rollback()

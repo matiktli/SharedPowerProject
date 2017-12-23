@@ -1,10 +1,11 @@
-import datetime
+from datetime import datetime, date, time,timedelta
+import datetime as dt
 
 import config.ConnectorMysql
 from config.ConnectorMysql import Connector
 
 class DatabaseCreator:
-
+    PERIOD=4
     namesUser = ["mati", "filip", "kasia", "wojtek", "sandra"]
     emails = ["srati@xx", "tulip@xx", "srasia@xx", "srojtek@xx", "skafandra@xx"]
     passwords = ["kulis", "mis", "krzys", "tuptus", "kupa"]
@@ -48,8 +49,8 @@ class DatabaseCreator:
 
     def createTableCalendar(self):
         calendar="CREATE TABLE CALENDAR (NAME CHAR(20) NOT NULL UNIQUE"
-        for i in range(0,4):
-            calendar+=", `%s` CHAR(20) NOT NULL DEFAULT 'FREE' " % (datetime.date.today() + datetime.timedelta(i)).__str__()
+        for i in range(0,self.PERIOD):
+            calendar+=", `%s` CHAR(20) NOT NULL DEFAULT 'FREE' " % (dt.date.today() + dt.timedelta(i)).__str__()
         calendar+=")"
         self.cursor.execute(calendar)
 
@@ -91,3 +92,45 @@ class DatabaseCreator:
                 self.database.commit()
             except:
                 self.database.rollback()
+
+    def addDayToTableCalendar(self, day):
+        if(day == self.lastDate()):
+            print("DATE ALREADY EXIST")
+            return
+        elif(day < self.lastDate()):
+            print("U CAN NOT GO BACK IN TIME")
+            return
+        sql="ALTER TABLE CALENDAR ADD COLUMN \
+          `%s` CHAR(20) NOT NULL DEFAULT 'FREE'" % (day)
+        try:
+            print(sql)
+            self.cursor.execute(sql)
+            self.database.commit()
+        except:
+            self.database.rollback()
+
+    def getAllColumns(self):
+        sql = "DESCRIBE CALENDAR"
+        self.cursor.execute(sql)
+        result = self.cursor.fetchall()
+        tab = []
+        for row in result:
+            tab.append(row[0])
+        tab.remove("NAME")
+        return tab
+
+    def lastDate(self):
+        tab=self.getAllColumns()
+        last=tab[len(tab)-1]
+        lastDate=datetime.strptime(last,"%Y-%m-%d").date()
+        return lastDate
+
+    def updateCalendar(self):
+        tmp=dt.date.today()
+        last=self.lastDate()
+        dif=(last-tmp).days
+        daysToAdd=self.PERIOD-dif-1
+        for i in range(0,daysToAdd):
+            self.addDayToTableCalendar(last+timedelta(i+1))
+
+
