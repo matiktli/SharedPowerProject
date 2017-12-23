@@ -1,3 +1,5 @@
+import datetime
+
 import config.ConnectorMysql
 from config.ConnectorMysql import Connector
 
@@ -17,9 +19,11 @@ class DatabaseCreator:
 
     def createTableUsers(self):
         usersTable = """CREATE TABLE USERS (
-           NAME  CHAR(20) NOT NULL,
+            ID  INT NOT NULL AUTO_INCREMENT,
+           NAME  CHAR(20) NOT NULL UNIQUE,
            EMAIL  CHAR(20) NOT NULL,
-           PASSWORD CHAR(20) NOT NULL  
+           PASSWORD CHAR(20) NOT NULL,
+           PRIMARY KEY(ID)
            )"""
         self.cursor.execute(usersTable)
 
@@ -29,10 +33,12 @@ class DatabaseCreator:
 
     def createTableTools(self):
         toolsTable= """CREATE TABLE TOOLS ( 
-            NAME  CHAR(20) NOT NULL,
+            ID  INT NOT NULL AUTO_INCREMENT,
+            NAME  CHAR(20) NOT NULL UNIQUE,
             OWNER  CHAR(20) NOT NULL,
             PRICE_DAY  DOUBLE NOT NULL,
-            PRICE_HALF  DOUBLE NOT NULL
+            PRICE_HALF  DOUBLE NOT NULL,
+            PRIMARY KEY(ID)
             )"""
         self.cursor.execute(toolsTable)
 
@@ -40,10 +46,20 @@ class DatabaseCreator:
         sql = "DROP TABLE IF EXISTS TOOLS"
         self.cursor.execute(sql)
 
+    def createTableCalendar(self):
+        calendar="CREATE TABLE CALENDAR (NAME CHAR(20) NOT NULL UNIQUE"
+        for i in range(0,4):
+            calendar+=", `%s` CHAR(20) NOT NULL DEFAULT 'FREE' " % (datetime.date.today() + datetime.timedelta(i)).__str__()
+        calendar+=")"
+        self.cursor.execute(calendar)
+
+    def dropTableCalendar(self):
+        sql = "DROP TABLE IF EXISTS CALENDAR"
+        self.cursor.execute(sql)
+
     def fillTableUsers(self):
         for i in range(len(self.namesUser)):
-            sql= "INSERT INTO USERS(NAME, \
-            EMAIL, PASSWORD) \
+            sql= "INSERT INTO USERS(NAME, EMAIL, PASSWORD) \
             VALUES ('%s', '%s' , '%s')" % \
                              (self.namesUser[i], self.emails[i],self.passwords[i])
             try:
@@ -54,10 +70,22 @@ class DatabaseCreator:
 
     def fillTableTools(self):
         for i in range(len(self.namesUser)):
+
             sql = "INSERT INTO TOOLS(NAME,  \
                     OWNER, PRICE_DAY, PRICE_HALF) \
                     VALUES ('%s','%s','%f','%f')" % \
                                  (self.namesTool[i], self.namesUser[i], self.priceDay[i], self.priceHalf[i])
+            try:
+                self.cursor.execute(sql)
+                self.database.commit()
+            except:
+                self.database.rollback()
+
+    def fillTableCalendar(self):
+        for i in range(len(self.namesUser)):
+
+            sql = "INSERT INTO CALENDAR(NAME) VALUES ('%s')" % \
+                                 (self.namesTool[i])
             try:
                 self.cursor.execute(sql)
                 self.database.commit()

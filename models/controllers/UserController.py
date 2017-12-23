@@ -4,7 +4,7 @@ from config.ConnectorMysql import Connector
 
 
 
-class UserController():
+class UserController:
 
 
 
@@ -24,12 +24,10 @@ class UserController():
             self.cursor.execute(userDatabaseObject)
             self.database.commit()
             print("User {0} saved to database".format(user.name))
-            self.database.close()
 
         except:
             self.database.rollback()
             print("ERROR! User {0} NOT saved to database".format(user.name))
-            self.database.close()
 
 
     def deleteUserFromDatabase(self, user):

@@ -11,7 +11,8 @@ class User:
         self.lented = []  # to someone
         self.borrowed = []  # form someone
 
-
+    def __str__(self):
+        return "NAME: {0}, EMAIL: {1}, PSW: {2}".format(self.name,self.email,self.password)
 
     def create(self,name,email,password):
         self.name = name
@@ -24,11 +25,7 @@ class User:
 
     def saveUser(self):
         x= UserController().saveUserToDatabase(self)
-        print("")
         return self
-
-    def __str__(self):
-        return "NAME: {0}, EMAIL: {1}, PSW: {2}".format(self.name,self.email,self.password)
 
     def addToOwned(self,tool):
         self.owned.append(tool)

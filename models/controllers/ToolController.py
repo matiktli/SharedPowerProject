@@ -1,7 +1,5 @@
 from config.ConnectorMysql import Connector
 
-from models.ToolModel import Tool
-
 
 class ToolController:
     def __init__(self):
@@ -18,11 +16,10 @@ class ToolController:
             self.cursor.execute(toolDatabaseObject)
             self.database.commit()
             print("Tool: {0}_{1} saved to database".format(tool.name,tool.owner))
-            self.database.close()
         except:
             self.database.rollback()
             print("ERROR! while saving a tool to db")
-            self.database.close()
+
 
     def deleteToolFromDatabase(self, tool):
         sql="DELETE FROM TOOLS WHERE NAME = '%s'" % (tool.name)
@@ -40,6 +37,7 @@ class ToolController:
         self.cursor.execute(sql)
         result = self.cursor.fetchall()
         for row in result:
+            from models.ToolModel import Tool
             tool=Tool(row[0],row[1],row[2],row[3])
             tools.append(tool)
         return tools
@@ -49,6 +47,17 @@ class ToolController:
         self.cursor.execute(sql)
         result = self.cursor.fetchall()
         for row in result:
+            from models.ToolModel import Tool
             tool = Tool(row[0], row[1], row[2], row[3])
         return tool
 
+    def findAllToolsForUser(self, username):
+        sql = "SELECT * FROM TOOLS WHERE OWNER = '%s'" % username
+        tools=[]
+        self.cursor.execute(sql)
+        result = self.cursor.fetchall()
+        for row in result:
+            from models.ToolModel import Tool
+            tool=Tool(row[1],row[2],row[3],row[4])
+            tools.append(tool)
+        return tools
