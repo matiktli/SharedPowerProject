@@ -5,9 +5,12 @@ from config.DatabaseCreator import DatabaseCreator
 #TABLE GENERATOR
 #-----------------
 from models.ToolModel import Tool
+from models.controllers.CalendarController import CalendarController
 from models.controllers.ToolController import ToolController
 
 creator=DatabaseCreator()
+calendarController=CalendarController()
+
 if(True):
     if(True): # DROP
         creator.dropTableCalendar()
@@ -15,7 +18,7 @@ if(True):
         creator.dropTableTools()
     if(True): #CREATE
         creator.createTableCalendar()
-        creator.updateCalendar()
+        calendarController.updateCalendar()
         creator.createTableUsers()
         creator.createTableTools()
     if(True): #FILL
@@ -35,4 +38,5 @@ if(True):
 #creator.addDayToTableCalendar(datetime.date.today()+datetime.timedelta(days=-1))
 #END
 #---------------
-
+calendarController.bookToolForDate("AA",datetime.date.today().__str__())
+print(calendarController.getCalendarForTool("AA"))
