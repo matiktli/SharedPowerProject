@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from models.controllers.CalendarController import CalendarController
 from models.controllers.ToolController import ToolController
 
@@ -33,5 +35,9 @@ class Tool():
         calendarRow=self.calendarController.getCalendarForTool(self)
         return calendarRow
 
-    def book(self,dateToBook,userName):
-        self.calendarController.bookToolForDate(self,dateToBook,userName)
+    def book(self,dateToBook,userName,days=1):
+        if days in range(1,4):
+            for i in range(0,days):
+                self.calendarController.bookToolForDate(self,dateToBook+timedelta(i),userName)
+        else:
+            print("BOOKING LIMIT UP TO 3 DAYS")

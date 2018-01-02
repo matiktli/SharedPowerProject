@@ -1,5 +1,8 @@
 from datetime import datetime, date, time,timedelta
 import datetime as dt
+
+from apt.package import unicode
+
 from config.ConnectorMysql import Connector
 
 
@@ -32,7 +35,6 @@ class CalendarController:
         sql="ALTER TABLE CALENDAR ADD COLUMN \
           `%s` CHAR(20) NOT NULL DEFAULT 'FREE'" % (day)
         try:
-            print(sql)
             self.cursor.execute(sql)
             self.database.commit()
         except:
@@ -78,6 +80,17 @@ class CalendarController:
         return sorted(mapList.items(),key=operator.itemgetter(0))
 
     def bookToolForDate(self, tool, dateToBook, userName):
-        sql = """UPDATE CALENDAR SET `%s` = "%s" WHERE NAME='%s';\nCOMMIT;""" % (dateToBook,userName,tool.name)
-        self.cursor.execute(sql)
+        cal=self.getCalendarForTool(tool)
+        #Self made iterator...
+        flag=0
+        for i in cal:
+            if i[0] == unicode(dateToBook) and i[1]=="FREE":
+                flag=1
+                break
+        if flag==1:
+            sql = """UPDATE CALENDAR SET `%s` = "%s" WHERE NAME='%s'""" % (dateToBook,userName,tool.name)
+            self.cursor.execute(sql)
+            self.database.commit()
+            print("BOOKED")
+        else: print("ERROR")
 

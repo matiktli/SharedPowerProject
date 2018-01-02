@@ -29,5 +29,5 @@ if(stat):
     if(stat): #ADD NEW & BOOK
         newTool=Tool("FF","mati",42.2,30.0)
         newTool.saveToolToDatabase()
-        newTool.book(datetime.date.today(),'KASIA')
+        newTool.book(datetime.date.today(),'KASIA',2)
 
