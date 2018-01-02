@@ -1,22 +1,18 @@
-import time
-from datetime import date, datetime, timedelta
-
-from models.CalendarModel import Calendar
 from models.controllers.CalendarController import CalendarController
 from models.controllers.ToolController import ToolController
 
 
-class Tool:
+class Tool():
 
-    toolController=ToolController()
-    calendarController=CalendarController()
+
     def __init__(self,name,owner,priceDay,priceHalf):
         self.id = None
         self.name=name
         self.priceDay=priceDay
         self.priceHalf=priceHalf
         self.owner=owner
-
+        self.toolController = ToolController()
+        self.calendarController = CalendarController()
 
 
     def __str__(self,list=None):
@@ -34,6 +30,8 @@ class Tool:
         self.calendarController.saveToolCalendar(self.name)
 
     def getCalendar(self):
-        calendarRow=self.calendarController.getCalendarForTool(self.name)
+        calendarRow=self.calendarController.getCalendarForTool(self)
         return calendarRow
 
+    def book(self,dateToBook,userName):
+        self.calendarController.bookToolForDate(self,dateToBook,userName)

@@ -10,33 +10,24 @@ from models.controllers.ToolController import ToolController
 
 creator=DatabaseCreator()
 calendarController=CalendarController()
-
-if(True):
-    if(True): # DROP
+stat=True
+if(stat):
+    print("Databases reset")
+    if(stat): # DROP
         creator.dropTableCalendar()
         creator.dropTableUsers()
         creator.dropTableTools()
-    if(True): #CREATE
+    if(stat): #CREATE
         creator.createTableCalendar()
         calendarController.updateCalendar()
         creator.createTableUsers()
         creator.createTableTools()
-    if(True): #FILL
+    if(stat): #FILL
         creator.fillTableCalendar()
         creator.fillTableUsers()
         creator.fillTableTools()
+    if(stat): #ADD NEW & BOOK
+        newTool=Tool("FF","mati",42.2,30.0)
+        newTool.saveToolToDatabase()
+        newTool.book(datetime.date.today(),'KASIA')
 
-#newTool=Tool("FF","mati",42.2,30.0)
-#newTool.saveToolToDatabase()
-#newTool2=Tool("GG","kasia",10,7)
-#newTool2.saveToolToDatabase()
-#-----------------
-#toolController=ToolController()
-#tools=toolController.findAllToolsForUser("mati")
-#print('\n'.join(map(str,tools)))
-#creator.addDayToTableCalendar(datetime.date.today()+datetime.timedelta(days=6))
-#creator.addDayToTableCalendar(datetime.date.today()+datetime.timedelta(days=-1))
-#END
-#---------------
-calendarController.bookToolForDate("AA",datetime.date.today().__str__())
-print(calendarController.getCalendarForTool("AA"))

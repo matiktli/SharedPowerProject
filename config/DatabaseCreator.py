@@ -50,7 +50,7 @@ class DatabaseCreator:
     def createTableCalendar(self):
         calendar="CREATE TABLE CALENDAR (NAME CHAR(20) NOT NULL UNIQUE"
         for i in range(0,self.PERIOD):
-            calendar+=", `%s` CHAR(20) NOT NULL DEFAULT 'FREE' " % (dt.date.today() + dt.timedelta(i)).__str__()
+            calendar+=", `%s` CHAR(20) NOT NULL DEFAULT 'FREE' " % (dt.date.today() + dt.timedelta(i))
         calendar+=")"
         self.cursor.execute(calendar)
 
@@ -93,5 +93,11 @@ class DatabaseCreator:
             except:
                 self.database.rollback()
 
+    def doo(self):
+        sql = """UPDATE SharedPower_db.CALENDAR SET `%s` = '%s' WHERE NAME='%s'""" % \
+              ("2017-12-26", "XD", "FF")
+        print(sql)
+        # print(self.getCalendarForTool(tool))
+        self.cursor.execute(sql)
 
 

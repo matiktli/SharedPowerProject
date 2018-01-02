@@ -22,3 +22,8 @@ class Connector:
     def disconnect(self):
         print("LOG: Disconnected from database")
         self.db.close()
+
+    def connect(self):
+        self.db = pymysql.connect("localhost","adminSharedPower","password","SharedPower_db" )
+        self.cursor = self.db.cursor()
+        return self.db

@@ -3,11 +3,13 @@ import datetime as dt
 from config.ConnectorMysql import Connector
 
 
+
 class CalendarController:
     PERIOD=4
 
     def __init__(self):
-        self.database = Connector().getDatabase()
+        self.connector = Connector()
+        self.database = self.connector.getDatabase()
         self.cursor = self.database.cursor()
 
     def saveToolCalendar(self, tool):
@@ -60,25 +62,22 @@ class CalendarController:
         for i in range(0,daysToAdd):
             self.addDayToTableCalendar(last+timedelta(i+1))
 
-    def getCalendarForTool(self, toolName):
-        sql="SELECT * FROM CALENDAR WHERE NAME = '%s'" % toolName
+    def getCalendarForTool(self, tool):
+        sql="SELECT * FROM CALENDAR WHERE NAME = '%s'" % tool.name
         self.cursor.execute(sql)
         result=self.cursor.fetchone()
         types=list(result)
-        types.remove(toolName)
+        types.remove(tool.name)
         dates=self.getAllColumns()
         mapList={} # DATE : TYPE
         counter=0
         for i in dates:
             mapList[dates[counter]]=(types[counter])
             counter += 1
-        return mapList
+        import operator
+        return sorted(mapList.items(),key=operator.itemgetter(0))
 
-    #TODO: FINISH IT KIDO
-    def bookToolForDate(self, toolName, dateToBook):
-        toolCalendar=self.getCalendarForTool(toolName)
-        if(toolCalendar[dateToBook] == 'FREE'):
-            print("BOOKED")
-        else: print("ERR")
-
+    def bookToolForDate(self, tool, dateToBook, userName):
+        sql = """UPDATE CALENDAR SET `%s` = "%s" WHERE NAME='%s';\nCOMMIT;""" % (dateToBook,userName,tool.name)
+        self.cursor.execute(sql)
 
