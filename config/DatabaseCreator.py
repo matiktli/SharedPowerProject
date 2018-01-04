@@ -24,6 +24,7 @@ class DatabaseCreator:
            NAME  CHAR(20) NOT NULL UNIQUE,
            EMAIL  CHAR(20) NOT NULL,
            PASSWORD CHAR(20) NOT NULL,
+           CHARGE FLOAT DEFAULT '0.0',
            PRIMARY KEY(ID)
            )"""
         self.cursor.execute(usersTable)
@@ -92,12 +93,5 @@ class DatabaseCreator:
                 self.database.commit()
             except:
                 self.database.rollback()
-
-    def doo(self):
-        sql = """UPDATE SharedPower_db.CALENDAR SET `%s` = '%s' WHERE NAME='%s'""" % \
-              ("2017-12-26", "XD", "FF")
-        print(sql)
-        # print(self.getCalendarForTool(tool))
-        self.cursor.execute(sql)
 
 

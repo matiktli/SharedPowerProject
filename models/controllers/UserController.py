@@ -11,7 +11,6 @@ class UserController:
     def __init__(self):
         self.database = Connector().getDatabase()
         self.cursor = self.database.cursor()
-        print("Opening connection to database")
 
     def saveUserToDatabase(self,user):
 
@@ -49,9 +48,10 @@ class UserController:
             name=row[0]
             email=row[1]
             password=row[2]
+            charge=row[3]
             from models.UserModel import User
             user = User(name,email,password)
-        print("User {0}".format(user.name))
+            user.addCharge(charge)
         return user
 
 
@@ -64,6 +64,21 @@ class UserController:
             name = row[0]
             email = row[1]
             password = row[2]
+            charge = row[3]
             from models.UserModel import User
-            users.append(User(name,email,password))
+            user = User(name, email, password)
+            user.addCharge(charge)
+            users.append(user)
         return users
+
+    def getUserCurrentCharge(self, username):
+        sql = "SELECT CHARGE FROM USERS WHERE NAME = '%s'" % username
+        self.cursor.execute(sql)
+        result=self.cursor.fetchall()
+        for row in result:
+            return row[0]
+
+    def addChargeForUser(self,charge,username):
+        sql = """UPDATE USERS SET CHARGE = %s WHERE NAME='%s'""" % (charge,username)
+        self.cursor.execute(sql)
+        self.database.commit()

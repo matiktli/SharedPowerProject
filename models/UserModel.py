@@ -7,9 +7,7 @@ class User:
         self.name = name
         self.email = email
         self.password = password
-        self.owned = []
-        self.lented = []  # to someone
-        self.borrowed = []  # form someone
+        self.charge=0
 
     def __str__(self):
         return "NAME: {0}, EMAIL: {1}, PSW: {2}".format(self.name,self.email,self.password)
@@ -18,17 +16,17 @@ class User:
         self.name = name
         self.email = email
         self.password = password
-        self.owned = []
-        self.lented = []  # to someone
-        self.borrowed = []  # form someone
         return self
 
     def saveUser(self):
-        x= UserController().saveUserToDatabase(self)
+        UserController().saveUserToDatabase(self)
         return self
 
-    def addToOwned(self,tool):
-        self.owned.append(tool)
+    def addCharge(self, charge):
+        self.charge=self.charge+charge
+
+
+
 
 
 

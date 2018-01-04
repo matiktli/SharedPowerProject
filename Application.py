@@ -27,7 +27,8 @@ if(stat):
         creator.fillTableUsers()
         creator.fillTableTools()
     if(stat): #ADD NEW & BOOK
-        newTool=Tool("FF","mati",42.2,30.0)
+        newTool=Tool("FF","mati",10,5)
         newTool.saveToolToDatabase()
         newTool.book(datetime.date.today(),'KASIA',2)
+        newTool.giveBack(datetime.date.today()+datetime.timedelta(3),'KASIA')
 
