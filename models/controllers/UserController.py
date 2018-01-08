@@ -45,13 +45,13 @@ class UserController:
         self.cursor.execute(sql)
         result = self.cursor.fetchall()
         for row in result:
-            name=row[0]
-            email=row[1]
-            password=row[2]
-            charge=row[3]
+            name=row[1]
+            email=row[2]
+            password=row[3]
+            charge=row[4]
             from models.UserModel import User
             user = User(name,email,password)
-            user.addCharge(charge)
+            user.charge=charge
         return user
 
 
@@ -61,10 +61,10 @@ class UserController:
         self.cursor.execute(sql)
         results = self.cursor.fetchall()
         for row in results:
-            name = row[0]
-            email = row[1]
-            password = row[2]
-            charge = row[3]
+            name = row[1]
+            email = row[2]
+            password = row[3]
+            charge = row[4]
             from models.UserModel import User
             user = User(name, email, password)
             user.addCharge(charge)
