@@ -14,19 +14,20 @@ class UserController:
 
     def saveUserToDatabase(self,user):
 
-        userDatabaseObject = "INSERT INTO USERS(NAME, \
-           EMAIL, PASSWORD) \
-           VALUES ('%s', '%s' , '%s')" % \
-                             (user.name, user.email,user.password)
+        userDatabaseObject = "INSERT INTO USERS(NAME, PASSWORD) \
+           VALUES ('%s', '%s')" % \
+                             (user.name, user.password)
 
         try:
             self.cursor.execute(userDatabaseObject)
             self.database.commit()
             print("User {0} saved to database".format(user.name))
+            return True
 
         except:
             self.database.rollback()
             print("ERROR! User {0} NOT saved to database".format(user.name))
+            return False
 
 
     def deleteUserFromDatabase(self, user):
@@ -46,11 +47,10 @@ class UserController:
         result = self.cursor.fetchall()
         for row in result:
             name=row[1]
-            email=row[2]
-            password=row[3]
-            charge=row[4]
+            password=row[2]
+            charge=row[3]
             from models.UserModel import User
-            user = User(name,email,password)
+            user = User(name, password)
             user.charge=charge
         return user
 
@@ -62,11 +62,10 @@ class UserController:
         results = self.cursor.fetchall()
         for row in results:
             name = row[1]
-            email = row[2]
-            password = row[3]
-            charge = row[4]
+            password = row[2]
+            charge = row[3]
             from models.UserModel import User
-            user = User(name, email, password)
+            user = User(name, password)
             user.addCharge(charge)
             users.append(user)
         return users

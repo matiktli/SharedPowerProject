@@ -7,7 +7,6 @@ from config.ConnectorMysql import Connector
 class DatabaseCreator:
     PERIOD=4
     namesUser = ["mati", "filip", "kasia", "wojtek", "sandra"]
-    emails = ["srati@xx", "tulip@xx", "srasia@xx", "srojtek@xx", "skafandra@xx"]
     passwords = ["kulis", "mis", "krzys", "tuptus", "kupa"]
     namesTool=["AA","BB","CC","DD","EE"]
     priceDay=[10.1,11.1,20.5,30.4,50.4]
@@ -22,7 +21,6 @@ class DatabaseCreator:
         usersTable = """CREATE TABLE USERS (
             ID  INT NOT NULL AUTO_INCREMENT,
            NAME  CHAR(20) NOT NULL UNIQUE,
-           EMAIL  CHAR(20) NOT NULL,
            PASSWORD CHAR(20) NOT NULL,
            CHARGE FLOAT DEFAULT '0.0',
            PRIMARY KEY(ID)
@@ -35,12 +33,10 @@ class DatabaseCreator:
 
     def createTableTools(self):
         toolsTable= """CREATE TABLE TOOLS ( 
-            ID  INT NOT NULL AUTO_INCREMENT,
             NAME  CHAR(20) NOT NULL UNIQUE,
             OWNER  CHAR(20) NOT NULL,
             PRICE_DAY  DOUBLE NOT NULL,
-            PRICE_HALF  DOUBLE NOT NULL,
-            PRIMARY KEY(ID)
+            PRICE_HALF  DOUBLE NOT NULL
             )"""
         self.cursor.execute(toolsTable)
 
@@ -61,9 +57,9 @@ class DatabaseCreator:
 
     def fillTableUsers(self):
         for i in range(len(self.namesUser)):
-            sql= "INSERT INTO USERS(NAME, EMAIL, PASSWORD) \
-            VALUES ('%s', '%s' , '%s')" % \
-                             (self.namesUser[i], self.emails[i],self.passwords[i])
+            sql= "INSERT INTO USERS(NAME, PASSWORD) \
+            VALUES ('%s', '%s')" % \
+                             (self.namesUser[i], self.passwords[i])
             try:
                 self.cursor.execute(sql)
                 self.database.commit()

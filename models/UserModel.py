@@ -3,18 +3,16 @@ from models.controllers.UserController import UserController
 
 class User:
 
-    def __init__(self,name,email,password):
+    def __init__(self,name, password):
         self.name = name
-        self.email = email
         self.password = password
         self.charge=0
 
     def __str__(self):
-        return "NAME: {0}, EMAIL: {1}, PSW: {2}".format(self.name,self.email,self.password)
+        return "NAME: {0}, PSW: {1}, CHARGE: {2}".format(self.name, self.password, self.charge)
 
-    def create(self,name,email,password):
+    def create(self, name, password):
         self.name = name
-        self.email = email
         self.password = password
         return self
 

@@ -20,7 +20,7 @@ class Tool():
 
 
     def __str__(self):
-        return "Name: {0}, Owner: {1}, Price_day: {2}, Price_half: {3}".format(self.name,self.owner,self.priceDay,self.priceHalf)
+        return "{0}_{1}_{2}_{3}".format(self.name,self.owner,self.priceDay,self.priceHalf)
 
     def saveToolToDatabase(self):
         self.toolController.saveToolToDatabase(self)
