@@ -8,6 +8,7 @@ from models.controllers.UserController import UserController
 
 class MainWindow(tk.Toplevel):
     loggedUser=None
+    selectedTool=None
     FONT_TYPE=("", 15)
 
 
@@ -84,9 +85,9 @@ class MainWindow(tk.Toplevel):
         self.withdraw()
         AddToolWindow(self.loggedUser,self)
 
-    def goToBookToolWindow(self,toolName):
+    def goToBookToolWindow(self):
         self.withdraw()
-        HireToolWindow(self.loggedUser,toolName,self)
+        HireToolWindow(self.loggedUser,self.selectedTool,self)
 
 
     def updateAllToolsList(self):
@@ -108,8 +109,7 @@ class MainWindow(tk.Toplevel):
         value = self.listOfAllToolsWidget.get(self.listOfAllToolsWidget.curselection())
         result=value.split("_")
         toolName=result[0]
-        print(toolName)
-        self.goToBookToolWindow(toolName)
+        self.selectedTool=toolName
 
 
     def currentSelectionUserTools(self, evt):
@@ -128,4 +128,4 @@ class MainWindow(tk.Toplevel):
             pass
 
     def _destroy(self,event):
-        self.owner.destroy()
+        self.owner.deiconify()

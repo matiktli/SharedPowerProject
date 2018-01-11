@@ -1,7 +1,9 @@
 import tkinter as tk
+from datetime import datetime
+from tkinter import messagebox
 
-from models.ToolModel import Tool
 from models.controllers.CalendarController import CalendarController
+from models.controllers.ToolController import ToolController
 
 
 class HireToolWindow(tk.Toplevel):
@@ -18,19 +20,38 @@ class HireToolWindow(tk.Toplevel):
         self.selectedTool=toolName
         self.title(user+" booking "+toolName)
 
-        self.listOfDatesWidget=tk.Listbox(self,font=self.FONT_TYPE, selectmode=tk.SINGLE)
+        self.listOfDatesWidget=tk.Listbox(self,font=self.FONT_TYPE, selectmode=tk.MULTIPLE)
         self.updateListOfDates()
-        self.bookButton=tk.Button(text="BOOK TOOL",font=self.FONT_TYPE)
+        self.listOfDatesWidget.bind('<<ListboxSelect>>', self.currentSelectedDates)
+        self.bookButton=tk.Button(self,text="BOOK TOOL",font=self.FONT_TYPE, command=self.bookButtonClick)
 
         self.listOfDatesWidget.grid(row=0)
         self.bookButton.grid(row=1)
 
 
     def updateListOfDates(self):
-        callendarMap=CalendarController().getCalendarForTool(Tool(self.selectedTool,"tmp",0,0))
+        callendarMap=CalendarController().getCalendarForTool(ToolController().findTool(self.selectedTool))
         for row in callendarMap:
             tmp=row[0]+"_"+row[1]
             self.listOfDatesWidget.insert(tk.END, tmp)
+
+    def currentSelectedDates(self, evt):
+        #TODO: IF U CAN FIND TIME LEARN LAMBDA TO CLEAR SELECTION!
+        values = [self.listOfDatesWidget.get(idx) for idx in self.listOfDatesWidget.curselection() if self.listOfDatesWidget.get(idx).split('_')[1]=="FREE"]
+        if(values.__len__()>3):
+            messagebox.showinfo("TO MANY DAYS","YOU CAN ONLY PICK 3 DAYS AT THE SAME TIME")
+
+    def bookButtonClick(self):
+        values = [self.listOfDatesWidget.get(idx) for idx in self.listOfDatesWidget.curselection()  if self.listOfDatesWidget.get(idx).split('_')[1]=="FREE"]
+        toolTmp=ToolController().findTool(self.selectedTool)
+        if (values.__len__() > 3):
+            messagebox.showinfo("TO MANY DAYS", "YOU CAN ONLY PICK 3 DAYS AT THE SAME TIME")
+        else:
+            for value in values:
+                date = value.split('_')[0]
+                toolTmp.book(datetime.strptime(date,"%Y-%m-%d").date(),self.loggedUser)
+            self.destroy()
+            self.owner.updateUserToolsList()
 
 
 #------------------------------------------------------------------------------------------------------------------------------------

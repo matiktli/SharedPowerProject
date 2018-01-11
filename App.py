@@ -18,6 +18,7 @@ class App(object):
                                                                                               sticky="W")
 
         self.loginEntry = tk.Entry(self.master,font=self.FONT_TYPE)
+        self.loginEntry.focus_set()
         self.loginEntry.grid(column=1, row=0)
         self.passwordEntry = tk.Entry(self.master,font=self.FONT_TYPE, show="*")
         self.passwordEntry.grid(column=1, row=1)
