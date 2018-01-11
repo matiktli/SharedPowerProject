@@ -1,20 +1,29 @@
 import pymysql
 
-# Config file for connection to mysql
 
-# Open database connection
-# (domain,username,password,database_name)
-db = pymysql.connect("localhost","adminSharedPower","password","SharedPower_db" )
+class Connector:
 
-# Create cursor object
-cursor = db.cursor()
+    def __init__(self):
+        # Open database connection
+        # (domain,username,password,database_name)
+        self.db = pymysql.connect("localhost","adminSharedPower","password","SharedPower_db" )
+        # Create cursor object
+        self.cursor = self.db.cursor()
 
-# Execute SQL query using execute() method.
-cursor.execute("SELECT VERSION()")
 
-# Fetch a single row using fetchone() method.
-data = cursor.fetchone()
-print ("Database version : %s " % data)
 
-# Disconnect from MySQL server
-db.close()
+    # Function returning cursor for db
+    def getCursor(self):
+        return self.cursor
+
+    def getDatabase(self):
+        return self.db
+
+    def disconnect(self):
+        print("LOG: Disconnected from database")
+        self.db.close()
+
+    def connect(self):
+        self.db = pymysql.connect("localhost","adminSharedPower","password","SharedPower_db" )
+        self.cursor = self.db.cursor()
+        return self.db
