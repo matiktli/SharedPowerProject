@@ -6,35 +6,25 @@ from models.UserModel import User
 from models.controllers.UserController import UserController
 
 
-class App:
+class App(object):
     FONT_TYPE=("", 20)
 
     def __init__(self,master):
         self.master=master
-        self.frame=tk.Frame(self.master)
-
-
-
-
-
-    def loginPage(self):
         self.master.title("Shared Power - Login")
-        self.frame = tk.Frame(self.master)
 
-        self.query= tk.StringVar()
-
-        self.loginLabel = tk.Label(text="Login:", font=self.FONT_TYPE).grid(column=0, row=0, sticky="W")
-        self.passwordLabel = tk.Label(text="Pass:", font=self.FONT_TYPE).grid(column=0, row=1,
+        self.loginLabel = tk.Label(self.master, text="Login:", font=self.FONT_TYPE).grid(column=0, row=0, sticky="W")
+        self.passwordLabel = tk.Label(self.master, text="Pass:", font=self.FONT_TYPE).grid(column=0, row=1,
                                                                                               sticky="W")
 
-        self.loginEntry = tk.Entry(font=self.FONT_TYPE)
+        self.loginEntry = tk.Entry(self.master,font=self.FONT_TYPE)
         self.loginEntry.grid(column=1, row=0)
-        self.passwordEntry = tk.Entry(font=self.FONT_TYPE, show="*")
+        self.passwordEntry = tk.Entry(self.master,font=self.FONT_TYPE, show="*")
         self.passwordEntry.grid(column=1, row=1)
 
-        self.loginButton = tk.Button(text="Login", font=self.FONT_TYPE,
+        self.loginButton = tk.Button(self.master,text="Login", font=self.FONT_TYPE,
                                      command=self.login).grid(column=1, row=2, stick="E")
-        self.createButton = tk.Button(text="Create", font=self.FONT_TYPE,
+        self.createButton = tk.Button(self.master,text="Create", font=self.FONT_TYPE,
                                      command=self.createAccount).grid(column=0, row=2, stick="E")
 
 
@@ -46,7 +36,7 @@ class App:
             user=UserController().findUser(userName)
             if(password==user.password):
                 self.master.withdraw()
-                MainWindow(tk.Toplevel(self.master),self.master,user)
+                MainWindow(user)
                 print("LOGGING IN...")
             else:
                 messagebox.showinfo("ERROR","INCORRECT PASSWORD")
@@ -70,5 +60,4 @@ class App:
 if __name__=='__main__':
     root=tk.Tk()
     app=App(root)
-    app.loginPage()
     root.mainloop()

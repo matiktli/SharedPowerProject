@@ -1,4 +1,5 @@
 from config.ConnectorMysql import Connector
+from models.controllers.CalendarController import CalendarController
 
 
 class ToolController:
@@ -59,3 +60,14 @@ class ToolController:
             tool=Tool(row[1],row[2],row[3],row[4])
             tools.append(tool)
         return tools
+
+    def findAllToolsHiredByUser(self, username):
+        allDates=CalendarController().getAllColumns()
+        toolsHired=[]
+        for date in allDates:
+            sql = "SELECT NAME FROM CALENDAR WHERE `%s` = '%s'" % (date,username)
+            self.cursor.execute(sql)
+            result=self.cursor.fetchall()
+            for row in result:
+                toolsHired.append(row[0])
+        return list(set(toolsHired))
