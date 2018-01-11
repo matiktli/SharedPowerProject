@@ -36,7 +36,8 @@ class DatabaseCreator:
             NAME  CHAR(20) NOT NULL UNIQUE,
             OWNER  CHAR(20) NOT NULL,
             PRICE_DAY  DOUBLE NOT NULL,
-            PRICE_HALF  DOUBLE NOT NULL
+            PRICE_HALF  DOUBLE NOT NULL,
+            DESCRIPTION CHAR(100) DEFAULT 'SOME DESCRIPTION'
             )"""
         self.cursor.execute(toolsTable)
 

@@ -14,6 +14,7 @@ class Tool():
         self.priceDay=priceDay
         self.priceHalf=priceHalf
         self.owner=owner
+        self.description=None
         self.toolController = ToolController()
         self.calendarController = CalendarController()
         self.userController = UserController()
@@ -52,3 +53,9 @@ class Tool():
             extraCharge=dif*self.priceDay*2
             newCharge = self.userController.getUserCurrentCharge(userName) + extraCharge
             self.userController.addChargeForUser(newCharge, userName)
+
+    def getDescription(self):
+        return ToolController().getDescriptionForTool(self.name)
+
+    def setDescription(self,desc):
+        ToolController().setDescriptionForTool(self.name,desc)

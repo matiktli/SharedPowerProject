@@ -36,7 +36,7 @@ class App(object):
             user=UserController().findUser(userName)
             if(password==user.password):
                 self.master.withdraw()
-                MainWindow(user)
+                MainWindow(user,root)
                 print("LOGGING IN...")
             else:
                 messagebox.showinfo("ERROR","INCORRECT PASSWORD")

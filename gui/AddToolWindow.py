@@ -1,20 +1,19 @@
 import tkinter as tk
-import pubsub as pubs
-
 
 from models.ToolModel import Tool
-from models.controllers.ToolController import ToolController
 
 
 class AddToolWindow(tk.Toplevel):
     loggedUser=None
-    FONT_TYPE=("", 10)
+    FONT_TYPE=("", 15)
 
     def __init__(self,user,owner):
         self.owner=owner
         tk.Toplevel.__init__(self)
         self.loggedUser=user
         self.title(self.loggedUser+" add a tool")
+        self.protocol("WM_DELETE_WINDOW", self._delete_window)
+        self.bind("<Destroy>", self._destroy)
 
         self.toolNameLabelStatic=tk.Label(self,text="Name:", font=self.FONT_TYPE)
         self.toolNameEntry=tk.Entry(self,font=self.FONT_TYPE)
@@ -39,5 +38,17 @@ class AddToolWindow(tk.Toplevel):
     def clickAddButton(self):
         tool=Tool(self.toolNameEntry.get(),self.loggedUser,float(self.priceDayEntry.get()),float(self.priceHalfEntry.get()))
         tool.saveToolToDatabase()
+        tool.setDescription(self.descEntry.get())
         self.destroy()
         self.owner.updateAllToolsList()
+
+ #------------------------------------------------------------------------------------------------------------------------------------
+
+    def _delete_window(self):
+        try:
+            self.destroy()
+        except:
+            pass
+
+    def _destroy(self,event):
+        self.owner.deiconify()

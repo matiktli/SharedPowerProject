@@ -71,3 +71,14 @@ class ToolController:
             for row in result:
                 toolsHired.append(row[0])
         return list(set(toolsHired))
+
+    def getDescriptionForTool(self, toolName):
+        sql="SELECT DESCRIPTION FROM TOOLS WHERE NAME='%s'" % toolName
+        self.cursor.execute(sql)
+        result=self.cursor.fetchone()
+        return str(result[0])
+
+    def setDescriptionForTool(self, toolName,desc):
+            sql="""UPDATE TOOLS SET DESCRIPTION='%s' WHERE NAME='%s'""" % (desc,toolName)
+            self.cursor.execute(sql)
+            self.database.commit()

@@ -1,19 +1,22 @@
 import tkinter as tk
-from tkinter import messagebox
 
 from gui.AddToolWindow import AddToolWindow
-from models.controllers.ImageController import ImageController
+from gui.HireToolWindow import HireToolWindow
 from models.controllers.ToolController import ToolController
+from models.controllers.UserController import UserController
 
 
 class MainWindow(tk.Toplevel):
     loggedUser=None
-    FONT_TYPE=("", 10)
+    FONT_TYPE=("", 15)
 
 
 
-    def __init__(self,user):
+    def __init__(self,user,owner):
+        self.owner=owner
         tk.Toplevel.__init__(self)
+        self.protocol("WM_DELETE_WINDOW", self._delete_window)
+        self.bind("<Destroy>", self._destroy)
         self.loggedUser=user.name
         self.title("Shared Power - Main Window")
         #self.master.geometry('1000x700')
@@ -78,11 +81,12 @@ class MainWindow(tk.Toplevel):
 
 
     def goToAddToolWindow(self):
+        self.withdraw()
         AddToolWindow(self.loggedUser,self)
-        print("moving to adding tool")
 
-    def goToBookToolWindow(self):
-        self.master.withdraw()
+    def goToBookToolWindow(self,toolName):
+        self.withdraw()
+        HireToolWindow(self.loggedUser,toolName,self)
 
 
     def updateAllToolsList(self):
@@ -96,6 +100,7 @@ class MainWindow(tk.Toplevel):
         self.listOfUserToolsWidget.delete(0,tk.END)
         self.listOfUserTools.clear()
         self.listOfUserTools=ToolController().findAllToolsHiredByUser(self.loggedUser)
+        self.chargeLabel.config(text=UserController().getUserCurrentCharge(self.loggedUser))
         for tool in self.listOfUserTools:
             self.listOfUserToolsWidget.insert(tk.END, tool)
 
@@ -104,6 +109,7 @@ class MainWindow(tk.Toplevel):
         result=value.split("_")
         toolName=result[0]
         print(toolName)
+        self.goToBookToolWindow(toolName)
 
 
     def currentSelectionUserTools(self, evt):
@@ -111,3 +117,15 @@ class MainWindow(tk.Toplevel):
         result = value.split("_")
         toolName = result[0]
         print(toolName)
+
+
+#------------------------------------------------------------------------------------------------------------------------------------
+
+    def _delete_window(self):
+        try:
+            self.destroy()
+        except:
+            pass
+
+    def _destroy(self,event):
+        self.owner.destroy()

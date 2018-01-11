@@ -34,5 +34,6 @@ if(stat):
         newTool2 = Tool("GG", "sratka", 100, 50)
         newTool2.saveToolToDatabase()
         newTool2.book(datetime.date.today(),'KASIA',1)
-
+        newTool2.setDescription("CHANGE DESCRIPTION")
+        print(CalendarController().getCalendarForTool(newTool2)[0][1])
 
