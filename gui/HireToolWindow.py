@@ -25,8 +25,13 @@ class HireToolWindow(tk.Toplevel):
         self.listOfDatesWidget.bind('<<ListboxSelect>>', self.currentSelectedDates)
         self.bookButton=tk.Button(self,text="BOOK TOOL",font=self.FONT_TYPE, command=self.bookButtonClick)
 
-        self.listOfDatesWidget.grid(row=0)
-        self.bookButton.grid(row=1)
+        self.scrollbar = tk.Scrollbar(self)
+        self.listOfDatesWidget.config(yscrollcommand=self.scrollbar.set)
+        self.scrollbar.config(command=self.listOfDatesWidget.yview)
+
+        self.listOfDatesWidget.grid(row=0, column=0)
+        self.bookButton.grid(row=1, column=0)
+        self.scrollbar.grid(row=0, column=1, stick="NSWE")
 
 
     def updateListOfDates(self):

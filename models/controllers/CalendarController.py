@@ -8,7 +8,7 @@ from config.ConnectorMysql import Connector
 
 
 class CalendarController:
-    PERIOD=4
+    PERIOD=15
 
     def __init__(self):
         self.connector = Connector()

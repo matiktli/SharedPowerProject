@@ -23,36 +23,47 @@ class MainWindow(tk.Toplevel):
         #self.master.geometry('1000x700')
 
         #TOP MENU
-        self.loginLabelStatic=tk.Label(self,text="Username: ",font=self.FONT_TYPE)
-        self.loginLabel=tk.Label(self, text=user.name, font=self.FONT_TYPE)
-        self.chargeLabelStatic = tk.Label(self, text="Charge: ", font=self.FONT_TYPE)
-        self.chargeLabel=tk.Label(self, text=user.charge, font=self.FONT_TYPE)
-        self.chargeLabel.grid(row=0, column=1)
-        self.addToolBt = tk.Button(self, text="Add tool", command=self.goToAddToolWindow, font=self.FONT_TYPE)
+        self.topMenuFrame=tk.Frame(self)
+        self.loginLabelStatic=tk.Label(self.topMenuFrame,text="Username: ",font=self.FONT_TYPE)
+        self.loginLabel=tk.Label(self.topMenuFrame, text=user.name, font=self.FONT_TYPE)
+        self.chargeLabelStatic = tk.Label(self.topMenuFrame, text="Charge: ", font=self.FONT_TYPE)
+        self.chargeLabel=tk.Label(self.topMenuFrame, text=user.charge, font=self.FONT_TYPE)
+        self.addToolBt = tk.Button(self.topMenuFrame, text="Add tool", command=self.goToAddToolWindow, font=self.FONT_TYPE)
 
         #LIST OF ALL TOOLS
-        self.allToolsTopic=tk.Label(self, text="ALL TOOLS", font=self.FONT_TYPE)
+        self.allToolFrame=tk.Frame(self)
+        self.allToolsTopic=tk.Label(self.allToolFrame, text="ALL TOOLS", font=self.FONT_TYPE)
+        self.listOfAllToolsWidget=tk.Listbox(self.allToolFrame, font=self.FONT_TYPE, selectmode=tk.SINGLE)
+        self.scrollbarAllTools=tk.Scrollbar(self.allToolFrame)
+
         self.listOfAllTools=ToolController().findAllTools()
-        self.listOfAllToolsWidget=tk.Listbox(self,heigh=30, font=self.FONT_TYPE, selectmode=tk.SINGLE)
         self.updateAllToolsList()
         self.listOfAllToolsWidget.bind('<<ListboxSelect>>',self.currentSelectionAllTools)
+        self.listOfAllToolsWidget.config(yscrollcommand=self.scrollbarAllTools.set)
+        self.scrollbarAllTools.config(command=self.listOfAllToolsWidget.yview)
 
         #LIST OF TOOLS USER HIRED
-        self.userToolsTopic=tk.Label(self, text="HIRED TOOLS", font=self.FONT_TYPE)
+        self.userToolFrame=tk.Frame(self)
+        self.userToolsTopic=tk.Label(self.userToolFrame, text="HIRED TOOLS", font=self.FONT_TYPE)
+        self.listOfUserToolsWidget=tk.Listbox(self.userToolFrame, font=self.FONT_TYPE, selectmode=tk.SINGLE)
+        self.scrollbarUserTools = tk.Scrollbar(self.userToolFrame)
+
         self.listOfUserTools=ToolController().findAllToolsHiredByUser(self.loggedUser)
-        self.listOfUserToolsWidget=tk.Listbox(self, heigh=30, font=self.FONT_TYPE, selectmode=tk.SINGLE)
         self.updateUserToolsList()
         self.listOfUserToolsWidget.bind('<<ListboxSelect>>', self.currentSelectionUserTools)
+        self.listOfUserToolsWidget.config(yscrollcommand=self.scrollbarUserTools.set)
+        self.scrollbarUserTools.config(command=self.listOfUserToolsWidget.yview)
 
         #TOOL AREA
-        self.photoLabel=tk.Label(self)
-        self.descriptionLabelStatic=tk.Label(self, text="Desc:", font=self.FONT_TYPE)
-        self.descriptionLabel=tk.Label(self, text="<<DESCRIPTION>>", font=self.FONT_TYPE)
-        self.priceDayLabelStatic=tk.Label(self, text="Price Day:", font=self.FONT_TYPE)
-        self.priceDayLabel=tk.Label(self, text="<<PRICE>>", font=self.FONT_TYPE)
-        self.priceHalfLabelStatic=tk.Label(self, text="Price Half:", font=self.FONT_TYPE)
-        self.priceHalfLabel=tk.Label(self, text="<<PRICE>>", font=self.FONT_TYPE)
-        self.bookToolBt=tk.Button(self, text="Hire Tool", font=self.FONT_TYPE, command=self.goToBookToolWindow)
+        self.toolFrame=tk.Frame(self)
+        self.photoLabel=tk.Label(self.toolFrame)
+        self.descriptionLabelStatic=tk.Label(self.toolFrame, text="Desc:", font=self.FONT_TYPE)
+        self.descriptionLabel=tk.Label(self.toolFrame, text="<<DESCRIPTION>>", font=self.FONT_TYPE)
+        self.priceDayLabelStatic=tk.Label(self.toolFrame, text="Price Day:", font=self.FONT_TYPE)
+        self.priceDayLabel=tk.Label(self.toolFrame, text="<<PRICE>>", font=self.FONT_TYPE)
+        self.priceHalfLabelStatic=tk.Label(self.toolFrame, text="Price Half:", font=self.FONT_TYPE)
+        self.priceHalfLabel=tk.Label(self.toolFrame, text="<<PRICE>>", font=self.FONT_TYPE)
+        self.bookToolBt=tk.Button(self.toolFrame, text="Hire Tool", font=self.FONT_TYPE, command=self.goToBookToolWindow)
 
 
         self.loginLabelStatic.grid(row=0, column=0)
@@ -61,24 +72,29 @@ class MainWindow(tk.Toplevel):
         self.chargeLabel.grid(row=0, column=3)
         self.addToolBt.grid(row=0, column=4)
 
-        self.userToolsTopic.grid(row=1,column=0, stick="NSWE")
-        self.allToolsTopic.grid(row=1,column=1, stick="NSWE")
+        self.allToolsTopic.grid(row=0,column=0, columnspan=2, stick="NSWE")
+        self.listOfAllToolsWidget.grid(row=1, column=0, stick="NSWE")
+        self.scrollbarAllTools.grid(row=1, column=1, stick="NSWE")
 
-        self.listOfUserToolsWidget.grid(row=2, rowspan=4, column=0, stick="N")
-        self.listOfAllToolsWidget.grid(row=2, rowspan=4, column=1, stick="N")
+        self.userToolsTopic.grid(row=0,column=0, columnspan=2, stick="NSWE")
+        self.listOfUserToolsWidget.grid(row=1, column=0, stick="NSWE")
+        self.scrollbarUserTools.grid(row=1, column=1, stick="NSWE")
+
+        self.photoLabel.grid(row=0, column=0, columnspan=2, stick="NSWE")
+        self.descriptionLabelStatic.grid(row=1, column=0, stick="NSWE")
+        self.descriptionLabel.grid(row=1,column=1, stick="NSWE")
+        self.priceHalfLabelStatic.grid(row=2,column=0,stick="NSWE")
+        self.priceHalfLabel.grid(row=2,column=1,stick="NSWE")
+        self.priceDayLabelStatic.grid(row=3,column=0,stick="NSWE")
+        self.priceDayLabel.grid(row=3,column=1, sticky="NSWE")
+        self.bookToolBt.grid(row=4,column=0,columnspan=2,stick="NSWE")
+
+        self.topMenuFrame.grid(row=0,column=0, columnspan=3, stick="NSWE")
+        self.userToolFrame.grid(row=1,column=0,stick="NSWE")
+        self.allToolFrame.grid(row=1,column=1,stick="NSWE")
+        self.toolFrame.grid(row=1,column=2,stick="NSWE")
 
 
-        self.descriptionLabelStatic.grid(row=3, column=2, stick="W")
-        self.descriptionLabel.grid(row=3,column=3, columnspan=2, stick="W")
-
-        self.priceHalfLabelStatic.grid(row=4,column=2,stick="W")
-        self.priceHalfLabel.grid(row=4,column=3,columnspan=2,stick="W")
-
-        self.priceDayLabelStatic.grid(row=5,column=2,stick="W")
-        self.priceDayLabel.grid(row=5,column=3,columnspan=2,sticky="W")
-
-        self.bookToolBt.grid(row=6,column=2,columnspan=2,stick="WE")
-        self.photoLabel.grid(row=2, column=2, columnspan=2, stick="NSWE")
 
 
     def goToAddToolWindow(self):
