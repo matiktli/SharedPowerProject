@@ -49,14 +49,18 @@ class HireToolWindow(tk.Toplevel):
     def bookButtonClick(self):
         values = [self.listOfDatesWidget.get(idx) for idx in self.listOfDatesWidget.curselection()  if self.listOfDatesWidget.get(idx).split('_')[1]=="FREE"]
         toolTmp=ToolController().findTool(self.selectedTool)
+        price=0
         if (values.__len__() > 3):
             messagebox.showinfo("TO MANY DAYS", "YOU CAN ONLY PICK 3 DAYS AT THE SAME TIME")
         else:
             for value in values:
                 date = value.split('_')[0]
                 toolTmp.book(datetime.strptime(date,"%Y-%m-%d").date(),self.loggedUser)
-            self.destroy()
-            self.owner.updateUserToolsList()
+                price=price+(values.__len__()*toolTmp.priceDay)
+            message="Price: "+str("%.2f" % price)
+            if(messagebox.showinfo("Bill for "+self.loggedUser,message)):
+                self.destroy()
+                self.owner.updateUserToolsList()
 
 
 #------------------------------------------------------------------------------------------------------------------------------------

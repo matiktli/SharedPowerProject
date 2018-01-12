@@ -2,6 +2,7 @@ import tkinter as tk
 
 from gui.AddToolWindow import AddToolWindow
 from gui.HireToolWindow import HireToolWindow
+from gui.ReturnToolWindow import ReturnToolWindow
 from models.controllers.ToolController import ToolController
 from models.controllers.UserController import UserController
 
@@ -10,6 +11,7 @@ class MainWindow(tk.Toplevel):
     loggedUser=None
     selectedTool=None
     FONT_TYPE=("", 15)
+    BORDER_TYPE="ridge"
 
 
 
@@ -23,7 +25,7 @@ class MainWindow(tk.Toplevel):
         #self.master.geometry('1000x700')
 
         #TOP MENU
-        self.topMenuFrame=tk.Frame(self)
+        self.topMenuFrame=tk.Frame(self,borderwidth=3, relief=self.BORDER_TYPE)
         self.loginLabelStatic=tk.Label(self.topMenuFrame,text="Username: ",font=self.FONT_TYPE)
         self.loginLabel=tk.Label(self.topMenuFrame, text=user.name, font=self.FONT_TYPE)
         self.chargeLabelStatic = tk.Label(self.topMenuFrame, text="Charge: ", font=self.FONT_TYPE)
@@ -31,7 +33,7 @@ class MainWindow(tk.Toplevel):
         self.addToolBt = tk.Button(self.topMenuFrame, text="Add tool", command=self.goToAddToolWindow, font=self.FONT_TYPE)
 
         #LIST OF ALL TOOLS
-        self.allToolFrame=tk.Frame(self)
+        self.allToolFrame=tk.Frame(self,borderwidth=3, relief=self.BORDER_TYPE)
         self.allToolsTopic=tk.Label(self.allToolFrame, text="ALL TOOLS", font=self.FONT_TYPE)
         self.listOfAllToolsWidget=tk.Listbox(self.allToolFrame, font=self.FONT_TYPE, selectmode=tk.SINGLE)
         self.scrollbarAllTools=tk.Scrollbar(self.allToolFrame)
@@ -43,7 +45,7 @@ class MainWindow(tk.Toplevel):
         self.scrollbarAllTools.config(command=self.listOfAllToolsWidget.yview)
 
         #LIST OF TOOLS USER HIRED
-        self.userToolFrame=tk.Frame(self)
+        self.userToolFrame=tk.Frame(self,borderwidth=2, relief=self.BORDER_TYPE)
         self.userToolsTopic=tk.Label(self.userToolFrame, text="HIRED TOOLS", font=self.FONT_TYPE)
         self.listOfUserToolsWidget=tk.Listbox(self.userToolFrame, font=self.FONT_TYPE, selectmode=tk.SINGLE)
         self.scrollbarUserTools = tk.Scrollbar(self.userToolFrame)
@@ -55,7 +57,7 @@ class MainWindow(tk.Toplevel):
         self.scrollbarUserTools.config(command=self.listOfUserToolsWidget.yview)
 
         #TOOL AREA
-        self.toolFrame=tk.Frame(self)
+        self.toolFrame=tk.Frame(self,borderwidth=2, relief=self.BORDER_TYPE)
         self.photoLabel=tk.Label(self.toolFrame)
         self.descriptionLabelStatic=tk.Label(self.toolFrame, text="Desc:", font=self.FONT_TYPE)
         self.descriptionLabel=tk.Label(self.toolFrame, text="<<DESCRIPTION>>", font=self.FONT_TYPE)
@@ -66,30 +68,30 @@ class MainWindow(tk.Toplevel):
         self.bookToolBt=tk.Button(self.toolFrame, text="Hire Tool", font=self.FONT_TYPE, command=self.goToBookToolWindow)
 
 
-        self.loginLabelStatic.grid(row=0, column=0)
-        self.loginLabel.grid(row=0, column=1)
-        self.chargeLabelStatic.grid(row=0, column=2)
-        self.chargeLabel.grid(row=0, column=3)
-        self.addToolBt.grid(row=0, column=4)
+        self.loginLabelStatic.pack(side=tk.LEFT, pady=10)
+        self.loginLabel.pack(side=tk.LEFT,padx=40)
+        self.chargeLabelStatic.pack(side=tk.LEFT)
+        self.chargeLabel.pack(side=tk.LEFT,padx=40)
+        self.addToolBt.pack(side=tk.RIGHT)
 
-        self.allToolsTopic.grid(row=0,column=0, columnspan=2, stick="NSWE")
+        self.allToolsTopic.grid(row=0,column=0, columnspan=2, stick="NSWE", pady=5)
         self.listOfAllToolsWidget.grid(row=1, column=0, stick="NSWE")
         self.scrollbarAllTools.grid(row=1, column=1, stick="NSWE")
 
-        self.userToolsTopic.grid(row=0,column=0, columnspan=2, stick="NSWE")
+        self.userToolsTopic.grid(row=0,column=0, columnspan=2, stick="NSWE",pady=5)
         self.listOfUserToolsWidget.grid(row=1, column=0, stick="NSWE")
         self.scrollbarUserTools.grid(row=1, column=1, stick="NSWE")
 
         self.photoLabel.grid(row=0, column=0, columnspan=2, stick="NSWE")
-        self.descriptionLabelStatic.grid(row=1, column=0, stick="NSWE")
+        self.descriptionLabelStatic.grid(row=1, column=0, stick="W")
         self.descriptionLabel.grid(row=1,column=1, stick="NSWE")
-        self.priceHalfLabelStatic.grid(row=2,column=0,stick="NSWE")
+        self.priceHalfLabelStatic.grid(row=2,column=0,stick="W")
         self.priceHalfLabel.grid(row=2,column=1,stick="NSWE")
-        self.priceDayLabelStatic.grid(row=3,column=0,stick="NSWE")
+        self.priceDayLabelStatic.grid(row=3,column=0,stick="W")
         self.priceDayLabel.grid(row=3,column=1, sticky="NSWE")
         self.bookToolBt.grid(row=4,column=0,columnspan=2,stick="NSWE")
 
-        self.topMenuFrame.grid(row=0,column=0, columnspan=3, stick="NSWE")
+        self.topMenuFrame.grid(row=0,column=0, columnspan=3, stick="WE")
         self.userToolFrame.grid(row=1,column=0,stick="NSWE")
         self.allToolFrame.grid(row=1,column=1,stick="NSWE")
         self.toolFrame.grid(row=1,column=2,stick="NSWE")
@@ -126,13 +128,19 @@ class MainWindow(tk.Toplevel):
         result=value.split("_")
         toolName=result[0]
         self.selectedTool=toolName
+        tool=ToolController().findTool(toolName)
+        self.descriptionLabel.config(text=tool.description)
+        self.priceDayLabel.config(text=str(tool.priceDay))
+        self.priceHalfLabel.config(text=str(tool.priceHalf))
+
 
 
     def currentSelectionUserTools(self, evt):
         value = self.listOfUserToolsWidget.get(self.listOfUserToolsWidget.curselection())
         result = value.split("_")
         toolName = result[0]
-        print(toolName)
+        self.withdraw()
+        ReturnToolWindow(self.loggedUser,toolName,self)
 
 
 #------------------------------------------------------------------------------------------------------------------------------------

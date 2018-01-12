@@ -34,12 +34,14 @@ class App(object):
         userName=self.loginEntry.get()
         password=self.passwordEntry.get()
         user=UserController().findUser(userName)
-        if(password==user.password):
-            self.master.withdraw()
-            MainWindow(user,root)
-            print("LOGGING IN...")
-        else:
-            messagebox.showinfo("ERROR","INCORRECT PASSWORD")
+        try:
+            if(password==user.password):
+                self.master.withdraw()
+                MainWindow(user,root)
+                print("LOGGING IN...")
+            else:
+                messagebox.showinfo("ERROR","INCORRECT PASSWORD")
+        except:
             messagebox.showinfo("ERROR","INCORRECT LOGIN")
 
     def createAccount(self):

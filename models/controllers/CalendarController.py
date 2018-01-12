@@ -94,3 +94,10 @@ class CalendarController:
             print("BOOKED")
         else: print("ERROR")
 
+    def returnTool(self, tool, dateToReturn):
+        try:
+            sql = """UPDATE CALENDAR SET `%s` = "FREE" WHERE NAME='%s'""" % (dateToReturn, tool.name)
+            self.cursor.execute(sql)
+            self.database.commit()
+        except:
+            print("ERROR WHILE RETURNING A TOOL")

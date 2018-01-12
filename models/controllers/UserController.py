@@ -45,11 +45,12 @@ class UserController:
         sql = "SELECT * FROM USERS WHERE NAME = '%s'" % (username)
         self.cursor.execute(sql)
         result = self.cursor.fetchall()
+        from models.UserModel import User
+        user=None
         for row in result:
             name=row[1]
             password=row[2]
             charge=row[3]
-            from models.UserModel import User
             user = User(name, password)
             user.charge=charge
         return user

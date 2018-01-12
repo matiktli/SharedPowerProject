@@ -48,6 +48,7 @@ class ToolController:
         for row in result:
             from models.ToolModel import Tool
             tool = Tool(row[0], row[1], row[2], row[3])
+            tool.description=row[4]
         return tool
 
     def findAllToolsForUser(self, username):
@@ -57,7 +58,8 @@ class ToolController:
         result = self.cursor.fetchall()
         for row in result:
             from models.ToolModel import Tool
-            tool=Tool(row[1],row[2],row[3],row[4])
+            tool=Tool(row[0],row[1],row[2],row[3])
+            tool.description=row[4]
             tools.append(tool)
         return tools
 

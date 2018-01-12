@@ -43,16 +43,21 @@ class Tool():
 
     def giveBack(self, returningDate,userName):
         cal=self.getCalendar()
+        print(cal)
         datesForUser=[]
         for i in range(0,cal.__len__()):
-            if cal[i][1] == userName:
+            if cal[i][1].lower() == userName:
                 datesForUser.append(cal[i][0])
+                dateToReturn=datetime.strptime(cal[i][0], '%Y-%m-%d').date()
+                CalendarController().returnTool(self,dateToReturn)
         lastDate=datetime.strptime(datesForUser[datesForUser.__len__()-1],'%Y-%m-%d').date()
         dif=(returningDate-lastDate).days
+        extraCharge=0
         if dif > 0:
             extraCharge=dif*self.priceDay*2
             newCharge = self.userController.getUserCurrentCharge(userName) + extraCharge
             self.userController.addChargeForUser(newCharge, userName)
+        return (dif, extraCharge)
 
     def getDescription(self):
         return ToolController().getDescriptionForTool(self.name)
