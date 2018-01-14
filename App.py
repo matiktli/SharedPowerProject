@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
+
 from gui.MainWindow import MainWindow
 from models.UserModel import User
 from models.controllers.UserController import UserController

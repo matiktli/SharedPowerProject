@@ -1,8 +1,12 @@
 import tkinter as tk
 
+import os
+from PIL import ImageTk
+
 from gui.AddToolWindow import AddToolWindow
 from gui.HireToolWindow import HireToolWindow
 from gui.ReturnToolWindow import ReturnToolWindow
+from models.controllers.ImageController import ImageController
 from models.controllers.ToolController import ToolController
 from models.controllers.UserController import UserController
 
@@ -17,6 +21,7 @@ class MainWindow(tk.Toplevel):
 
     def __init__(self,user,owner):
         self.owner=owner
+        self.tmpPhoto=None
         tk.Toplevel.__init__(self)
         self.protocol("WM_DELETE_WINDOW", self._delete_window)
         self.bind("<Destroy>", self._destroy)
@@ -58,7 +63,10 @@ class MainWindow(tk.Toplevel):
 
         #TOOL AREA
         self.toolFrame=tk.Frame(self,borderwidth=2, relief=self.BORDER_TYPE)
-        self.photoLabel=tk.Label(self.toolFrame)
+        self.photoLabel = tk.Label(self.toolFrame)
+        self.tmpPhoto=ImageController().getDefaultPhoto()
+        self.photoLabel.config(image=self.tmpPhoto)
+        self.photoLabel.image=self.tmpPhoto
         self.descriptionLabelStatic=tk.Label(self.toolFrame, text="Desc:", font=self.FONT_TYPE)
         self.descriptionLabel=tk.Label(self.toolFrame, text="<<DESCRIPTION>>", font=self.FONT_TYPE)
         self.priceDayLabelStatic=tk.Label(self.toolFrame, text="Price Day:", font=self.FONT_TYPE)
@@ -132,8 +140,13 @@ class MainWindow(tk.Toplevel):
         self.descriptionLabel.config(text=tool.description)
         self.priceDayLabel.config(text=str(tool.priceDay))
         self.priceHalfLabel.config(text=str(tool.priceHalf))
-
-
+        try:
+            imageTmp=ImageController().getPhotoOfTool(self.selectedTool)
+            self.photoLabel.config(image=imageTmp)
+            self.photoLabel.image=imageTmp
+        except:
+            self.photoLabel.config(image=self.tmpPhoto)
+            self.photoLabel.image = self.tmpPhoto
 
     def currentSelectionUserTools(self, evt):
         value = self.listOfUserToolsWidget.get(self.listOfUserToolsWidget.curselection())

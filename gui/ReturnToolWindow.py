@@ -1,6 +1,8 @@
 import tkinter as tk
 from datetime import datetime, timedelta
 from tkinter import messagebox
+
+from models.controllers.ImageController import ImageController
 from models.controllers.ToolController import ToolController
 
 
@@ -17,12 +19,12 @@ class ReturnToolWindow(tk.Toplevel):
         self.title(user + " returning " + toolName)
 
         self.var = tk.BooleanVar()
-        #TODO: ADD PHOTO
-        self.descriptionFrame=tk.Frame(self)
+        self.textFrame=tk.Frame(self)
+        self.descriptionFrame=tk.Frame(self.textFrame)
         self.descriptionLabelStatic = tk.Label(self.descriptionFrame, text="Desc:", font=self.FONT_TYPE)
         self.descriptionEntry = tk.Entry(self.descriptionFrame, font=self.FONT_TYPE)
 
-        self.dispatchFrame=tk.Frame(self)
+        self.dispatchFrame=tk.Frame(self.textFrame)
         self.dispatchLabel=tk.Label(self.dispatchFrame,text="Hire dispatch driver: ", font=self.FONT_TYPE)
         self.dispatchRadio=tk.Radiobutton(self.dispatchFrame,text="", font=self.FONT_TYPE, variable=self.var, value=True)
 
@@ -34,9 +36,15 @@ class ReturnToolWindow(tk.Toplevel):
         self.dispatchLabel.pack(side=tk.LEFT, padx=5, pady=5)
         self.dispatchRadio.pack(side=tk.LEFT)
 
+        self.tmpPhoto=ImageController().getPhotoOfTool(self.selectedTool)
+        self.photoLabel=tk.Label(self,image=self.tmpPhoto)
+        self.photoLabel.image=self.tmpPhoto
+        self.photoLabel.bind("<Button-1>",self.photoLabelClick)
+        self.textFrame.grid(row=0,column=0)
+        self.photoLabel.grid(row=0,column=1)
         self.descriptionFrame.grid(row=0)
         self.dispatchFrame.grid(row=1)
-        self.returnButton.grid(row=2)
+        self.returnButton.grid(row=1,column=1)
 
 
     def returnButtonClick(self):
@@ -52,6 +60,8 @@ class ReturnToolWindow(tk.Toplevel):
         else:
             messagebox.showinfo("ERROR","YOU MUST DESCRIBE CURRENT CONDITION OF TOOL")
 
+    def photoLabelClick(self):
+        pass
 
 #------------------------------------------------------------------------------------------------------------------------------------
 
