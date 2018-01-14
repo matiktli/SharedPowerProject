@@ -56,7 +56,8 @@ class HireToolWindow(tk.Toplevel):
             for value in values:
                 date = value.split('_')[0]
                 toolTmp.book(datetime.strptime(date,"%Y-%m-%d").date(),self.loggedUser)
-                price=price+(values.__len__()*toolTmp.priceDay)
+               
+            price=price+(values.__len__()*toolTmp.priceDay)
             message="Price: "+str("%.2f" % price)
             if(messagebox.showinfo("Bill for "+self.loggedUser,message)):
                 self.destroy()

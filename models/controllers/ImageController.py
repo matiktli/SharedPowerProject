@@ -14,10 +14,6 @@ class ImageController():
             os.mkdir(os.getcwd() + "/toolsPhotos/")
 
     def savePhotoOfTool(self,filepath,toolName):
-        try:
-            self.deletePhotoOfTool("tmpPhotoOfAddedTool")
-        except:
-            pass
         photo = Image.open(filepath)
         photo = photo.resize((self.HEIGH, self.WIDTH), Image.ANTIALIAS)
         photo.save(self.PATH_TO_PHOTO_DB + toolName + ".ppm", "ppm")

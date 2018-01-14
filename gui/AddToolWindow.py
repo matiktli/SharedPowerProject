@@ -67,7 +67,7 @@ class AddToolWindow(tk.Toplevel):
     def addPhotoClick(self,eve):
         print("BAM")
         self.filename = filedialog.askopenfilename(initialdir="/home/matikitli/Pulpit/SharedPowerPhotos/", title="Select photo of tool",
-                                                   filetypes=(("png files", "*.png"), ("all files", "*.*")))
+                                                   filetypes=(("png files", "*.png"),("all files","*.*")))
         self.tmpPhoto=ImageController().createTmpPhoto(self.filename)
         if(self.tmpPhoto):
             self.photoLabel1.config(image=self.tmpPhoto)

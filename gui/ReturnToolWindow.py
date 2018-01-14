@@ -1,6 +1,6 @@
 import tkinter as tk
 from datetime import datetime, timedelta
-from tkinter import messagebox
+from tkinter import messagebox, filedialog
 
 from models.controllers.ImageController import ImageController
 from models.controllers.ToolController import ToolController
@@ -50,18 +50,26 @@ class ReturnToolWindow(tk.Toplevel):
     def returnButtonClick(self):
         tool=ToolController().findTool(self.selectedTool)
         desc=self.descriptionEntry.get()
-        if(desc):
+        if(desc and self.tmpPhoto):
             tool.setDescription(desc)
             result = tool.giveBack(datetime.today().date(), self.loggedUser)
             message="EXTRA DAYS: {0}\nEXTRA BILL ADDED: {1}\nDRIVER HIRED: {2}".format(result[0],result[1],self.var.get())
+            ImageController().savePhotoOfTool(self.filename,self.selectedTool)
             if(messagebox.showinfo("Bill for "+self.loggedUser,message)):
                 self.destroy()
                 self.owner.updateUserToolsList()
         else:
             messagebox.showinfo("ERROR","YOU MUST DESCRIBE CURRENT CONDITION OF TOOL")
 
-    def photoLabelClick(self):
-        pass
+    def photoLabelClick(self,eve):
+        self.filename = filedialog.askopenfilename(initialdir="/home/matikitli/Pulpit/SharedPowerPhotos/",
+                                                   title="Upgrade photo of tool: "+self.selectedTool,
+                                                   filetypes=(("png files", "*.png"),("all files","*.*")))
+        self.tmpPhoto = ImageController().createTmpPhoto(self.filename)
+        if (self.tmpPhoto):
+            self.photoLabel.config(image=self.tmpPhoto)
+            self.photoLabel.image = self.tmpPhoto
+            print("Photo label upgraded")
 
 #------------------------------------------------------------------------------------------------------------------------------------
 

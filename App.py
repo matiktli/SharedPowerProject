@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
-
+import Application
 from gui.MainWindow import MainWindow
 from models.UserModel import User
 from models.controllers.UserController import UserController
@@ -59,7 +59,8 @@ class App(object):
             messagebox.showinfo("ERROR","IDK ERR")
 
 
-if __name__=='__main__':
-    root=tk.Tk()
-    app=App(root)
-    root.mainloop()
+root=tk.Tk()
+Application.WholeCreator()
+app=App(root)
+root.mainloop()
+

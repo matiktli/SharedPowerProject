@@ -1,8 +1,12 @@
 from datetime import datetime, date, time,timedelta
 import datetime as dt
+import shutil
+import os
 
 import config.ConnectorMysql
 from config.ConnectorMysql import Connector
+from models.controllers.ImageController import ImageController
+
 
 class DatabaseCreator:
     PERIOD=4
@@ -91,4 +95,11 @@ class DatabaseCreator:
             except:
                 self.database.rollback()
 
-
+    def fillPhotos(self):
+        pathToSave = os.getcwd() + "/toolsPhotos"
+        pathOfPhotos = "/home/matikitli/Pulpit/SharedPowerPhotos/"
+        if(os.path.exists(pathToSave)):
+            shutil.rmtree(pathToSave)
+            os.mkdir(pathToSave)
+        for i in range(len(self.namesTool)):
+            self.tmpPhoto=ImageController().savePhotoOfTool(pathOfPhotos+"TMP.png",self.namesTool[i])
