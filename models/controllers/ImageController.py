@@ -1,36 +1,42 @@
-from tkinter import PhotoImage
-
-from PIL import Image
-import numpy as np
 import os as os
+
+from PIL import Image, ImageTk
 
 
 class ImageController():
-    PATH="/home/matikitli/Pulpit/SharedPowerPhotos/"
-    FORMAT=".png"
+    PATH_TO_PHOTO_DB = os.getcwd() + "/toolsPhotos/"
+    PATH_TO_RESOURCES = os.getcwd() + "/resources/"
     HEIGH=100
     WIDTH=100
 
-    def savePhotoOfTool(self, toolName, image):
+    def __init__(self):
+        if(not os.path.exists(self.PATH_TO_PHOTO_DB)):
+            os.mkdir(os.getcwd() + "/toolsPhotos/")
 
-        imageMatrix=np.array(image)
-        nameOfFile=toolName+".bmp"
-        fft_mag = np.abs(np.fft.fftshift(np.fft.fft2(imageMatrix)))
+    def savePhotoOfTool(self,filepath,toolName):
+        photo = Image.open(filepath)
+        photo = photo.resize((self.HEIGH, self.WIDTH), Image.ANTIALIAS)
+        photo.save(self.PATH_TO_PHOTO_DB + toolName + ".ppm", "ppm")
+        widgetPhoto = ImageTk.PhotoImage(file=self.PATH_TO_PHOTO_DB + toolName + ".ppm")
+        return widgetPhoto
 
-        visual = np.log(fft_mag)
-        visual = (visual - visual.min()) / (visual.max() - visual.min())
+    def createTmpPhoto(self,filepath):
+        photoTmp=Image.open(filepath)
+        photoTmp = photoTmp.resize((self.HEIGH, self.WIDTH), Image.ANTIALIAS)
+        photoTmp.save(self.PATH_TO_PHOTO_DB + "tmpPhotoOfAddedTool" + ".ppm", "ppm")
+        widgetPhoto = ImageTk.PhotoImage(file=self.PATH_TO_PHOTO_DB + "tmpPhotoOfAddedTool" + ".ppm")
+        self.deletePhotoOfTool("tmpPhotoOfAddedTool")
+        return widgetPhoto
 
-        result = Image.fromarray((visual * 255).astype(np.uint8))
-        result.save(self.PATH+nameOfFile)
 
     def deletePhotoOfTool(self, toolName):
         try:
-            os.remove(self.PATH+toolName+self.FORMAT)
+            os.remove(self.PATH_TO_PHOTO_DB + toolName + ".ppm")
         except: print("ERROR while  deleting file")
 
     def getPhotoOfTool(self, toolName):
-        photo = Image.open(self.PATH+toolName+self.FORMAT)
-        photo=photo.resize((self.HEIGH,self.WIDTH),Image.ANTIALIAS)
-        photo.save(self.PATH+toolName+".ppm", "ppm")
-        widgetPhoto=PhotoImage(file=self.PATH+toolName+".ppm")
+        widgetPhoto = ImageTk.PhotoImage(file=self.PATH_TO_PHOTO_DB + toolName + ".ppm")
         return widgetPhoto
+
+    def getDefaultPhoto(self):
+        return ImageTk.PhotoImage(file=self.PATH_TO_RESOURCES + "AddPhotoIcon" + ".png")
