@@ -1,5 +1,5 @@
 import os as os
-from tkinter import PhotoImage
+
 from PIL import Image, ImageTk
 
 

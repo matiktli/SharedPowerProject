@@ -79,7 +79,7 @@ class CalendarController:
         import operator
         return sorted(mapList.items(),key=operator.itemgetter(0))
 
-    def bookToolForDate(self, tool, dateToBook, userName):
+    def bookToolForDate(self, tool, dateToBook, userName,type="DAY"):
         cal=self.getCalendarForTool(tool)
         #Self made iterator...
         flag=0
@@ -88,10 +88,9 @@ class CalendarController:
                 flag=1
                 break
         if flag==1:
-            sql = """UPDATE CALENDAR SET `%s` = "%s" WHERE NAME='%s'""" % (dateToBook,userName,tool.name)
+            sql = """UPDATE CALENDAR SET `%s` = "%s" WHERE NAME='%s'""" % (dateToBook,userName+"_"+type,tool.name)
             self.cursor.execute(sql)
             self.database.commit()
-            print("BOOKED")
         else: print("ERROR")
 
     def returnTool(self, tool, dateToReturn):

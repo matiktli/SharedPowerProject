@@ -31,22 +31,25 @@ class Tool():
         calendarRow=self.calendarController.getCalendarForTool(self)
         return calendarRow
 
-    def book(self,dateToBook,userName,days=1):
+    def book(self,dateToBook,userName,days=1,type="DAY"):
         if days in range(1,4):
             for i in range(0,days):
-                self.calendarController.bookToolForDate(self,dateToBook+timedelta(i),userName)
-            charge=self.priceDay*days
-            newCharge=self.userController.getUserCurrentCharge(userName)+charge
-            self.userController.addChargeForUser(newCharge,userName)
+                self.calendarController.bookToolForDate(self,dateToBook+timedelta(i),userName,type)
+            if type=="HALF":
+                charge=self.priceHalf*days
+            else:
+                charge=self.priceDay*days
+            self.userController.addChargeForUser(charge,userName)
+            return (charge)
         else:
             print("BOOKING LIMIT UP TO 3 DAYS")
+            return None
 
     def giveBack(self, returningDate,userName):
         cal=self.getCalendar()
-        print(cal)
         datesForUser=[]
         for i in range(0,cal.__len__()):
-            if cal[i][1].lower() == userName:
+            if cal[i][1].lower() == userName+"_day" or cal[i][1].lower() == userName+"_half":
                 datesForUser.append(cal[i][0])
                 dateToReturn=datetime.strptime(cal[i][0], '%Y-%m-%d').date()
                 CalendarController().returnTool(self,dateToReturn)

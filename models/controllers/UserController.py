@@ -79,6 +79,7 @@ class UserController:
             return row[0]
 
     def addChargeForUser(self,charge,username):
-        sql = """UPDATE USERS SET CHARGE = %s WHERE NAME='%s'""" % (charge,username)
+        old=self.getUserCurrentCharge(username)
+        sql = """UPDATE USERS SET CHARGE = %s WHERE NAME='%s'""" % (charge+old,username)
         self.cursor.execute(sql)
         self.database.commit()

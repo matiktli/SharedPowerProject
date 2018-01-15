@@ -3,10 +3,11 @@ import tkinter as tk
 class MessageWindow(tk.Toplevel):
     FONT_TYPE=("", 15)
 
-    def __init__(self,userName,bill,hireDispatch,owner):
+    def __init__(self,userName,bill,hireDispatch,owner,insurance):
         tk.Toplevel.__init__(self)
         self.protocol("WM_DELETE_WINDOW", self._delete_window)
         self.bind("<Destroy>", self._destroy)
+        self.insurance=insurance
         self.userName=userName
         self.title("BILL FOR USER: "+self.userName)
         self.bill = bill
@@ -14,7 +15,7 @@ class MessageWindow(tk.Toplevel):
         self.owner=owner
         self.billFrame=tk.Frame(self)
         self.dispatchFrame=tk.Frame(self)
-        self.billLabelStatic=tk.Label(self.billFrame,text="Charge added to your account bill: {0}".format(self.bill),
+        self.billLabelStatic=tk.Label(self.billFrame,text="Charge added to your account bill: %.2f\n+ %.2f (INSURANCE)" % (self.bill,self.insurance),
                                       font=self.FONT_TYPE)
 
         self.postcodeLabelStatic=tk.Label(self.dispatchFrame,text="Post code: ",font=self.FONT_TYPE)

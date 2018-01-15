@@ -1,7 +1,5 @@
 import tkinter as tk
-
-import os
-from PIL import ImageTk
+from tkinter import messagebox
 
 from gui.AddToolWindow import AddToolWindow
 from gui.HireToolWindow import HireToolWindow
@@ -79,6 +77,7 @@ class MainWindow(tk.Toplevel):
         self.loginLabelStatic.pack(side=tk.LEFT, pady=10)
         self.loginLabel.pack(side=tk.LEFT,padx=40)
         self.chargeLabelStatic.pack(side=tk.LEFT)
+        self.chargeLabelStatic.bind("<Button-1>",self.iluminatiFunction)
         self.chargeLabel.pack(side=tk.LEFT,padx=40)
         self.addToolBt.pack(side=tk.RIGHT)
 
@@ -155,6 +154,12 @@ class MainWindow(tk.Toplevel):
         self.withdraw()
         ReturnToolWindow(self.loggedUser,toolName,self)
 
+    def iluminatiFunction(self, eve):
+        users=UserController().findAllUsers()
+        message=""
+        for user in users:
+            message=message+user.name + " current charge is: "+str(user.charge)+"\n"
+        messagebox.showinfo("ILUMINATI IS HERE!",message)
 
 #------------------------------------------------------------------------------------------------------------------------------------
 

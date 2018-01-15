@@ -67,7 +67,8 @@ class ToolController:
         allDates=CalendarController().getAllColumns()
         toolsHired=[]
         for date in allDates:
-            sql = "SELECT NAME FROM CALENDAR WHERE `%s` = '%s'" % (date,username)
+            sql = "SELECT NAME FROM CALENDAR WHERE `%s` = '%s' OR `%s` = '%s'" % (date,username+ "_HALF",
+                                                                                  date,username + "_DAY" )
             self.cursor.execute(sql)
             result=self.cursor.fetchall()
             for row in result:

@@ -63,14 +63,15 @@ class AddToolWindow(tk.Toplevel):
             self.owner.updateAllToolsList()
 
     def addPhotoClick(self,eve):
-        print("BAM")
-        self.filename = filedialog.askopenfilename(initialdir="/home/matikitli/Pulpit/SharedPowerPhotos/", title="Select photo of tool",
-                                                   filetypes=(("png files", "*.png"),("all files","*.*")))
-        self.tmpPhoto=ImageController().createTmpPhoto(self.filename)
-        if(self.tmpPhoto):
-            self.photoLabel1.config(image=self.tmpPhoto)
-            self.photoLabel1.image=self.tmpPhoto
-            print("Photo label upgraded")
+        try:
+            self.filename = filedialog.askopenfilename(initialdir="/home/matikitli/Pulpit/SharedPowerPhotos/", title="Select photo of tool",
+                                                       filetypes=(("png files", "*.png"),("all files","*.*")))
+            self.tmpPhoto=ImageController().createTmpPhoto(self.filename)
+            if(self.tmpPhoto):
+                self.photoLabel1.config(image=self.tmpPhoto)
+                self.photoLabel1.image=self.tmpPhoto
+        except:
+            messagebox.showinfo("WRONG FORMAT","ERROR WHILE CONVERTING,\nUPLOAD ANOTHER PHOTO")
 
     def conditionChecker(self):
         if(self.toolNameEntry.get() and self.priceDayEntry.get() and self.priceHalfEntry.get()

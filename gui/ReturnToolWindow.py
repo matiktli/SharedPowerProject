@@ -1,5 +1,5 @@
 import tkinter as tk
-from datetime import datetime, timedelta
+from datetime import datetime
 from tkinter import messagebox, filedialog
 
 from models.controllers.ImageController import ImageController
@@ -62,14 +62,16 @@ class ReturnToolWindow(tk.Toplevel):
             messagebox.showinfo("ERROR","YOU MUST:\n-DESCRIBE CURRENT CONDITION\n-AND ADD THE CURRENT PHOTO")
 
     def photoLabelClick(self,eve):
-        self.filename = filedialog.askopenfilename(initialdir="/home/matikitli/Pulpit/SharedPowerPhotos/",
-                                                   title="Upgrade photo of tool: "+self.selectedTool,
-                                                   filetypes=(("png files", "*.png"),("all files","*.*")))
-        self.tmpPhoto = ImageController().createTmpPhoto(self.filename)
-        if (self.tmpPhoto):
-            self.photoLabel.config(image=self.tmpPhoto)
-            self.photoLabel.image = self.tmpPhoto
-            print("Photo label upgraded")
+        try:
+            self.filename = filedialog.askopenfilename(initialdir="/home/matikitli/Pulpit/SharedPowerPhotos/",
+                                                       title="Upgrade photo of tool: "+self.selectedTool,
+                                                       filetypes=(("png files", "*.png"),("all files","*.*")))
+            self.tmpPhoto = ImageController().createTmpPhoto(self.filename)
+            if (self.tmpPhoto):
+                self.photoLabel.config(image=self.tmpPhoto)
+                self.photoLabel.image = self.tmpPhoto
+        except:
+            messagebox.showinfo("WRONG FORMAT","ERROR WHILE CONVERTING,\nUPLOAD ANOTHER PHOTO")
 
     def conditionChecker(self):
         if(self.descriptionEntry.get() and self.filename and self.tmpPhoto):

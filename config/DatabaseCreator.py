@@ -1,9 +1,7 @@
-from datetime import datetime, date, time,timedelta
 import datetime as dt
-import shutil
 import os
+import shutil
 
-import config.ConnectorMysql
 from config.ConnectorMysql import Connector
 from models.controllers.ImageController import ImageController
 
@@ -102,5 +100,4 @@ class DatabaseCreator:
             shutil.rmtree(pathToSave)
             os.mkdir(pathToSave)
         for i in range(len(self.namesTool)):
-            print(">>>>>>>>>>>>>ERR IN:",str(i+1))
             self.tmpPhoto=ImageController().savePhotoOfTool(pathOfPhotos+""+str(i+1)+".png",self.namesTool[i])
