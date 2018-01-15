@@ -2,6 +2,7 @@ import tkinter as tk
 from datetime import datetime
 from tkinter import messagebox
 
+from gui.MessageWindow import MessageWindow
 from models.controllers.CalendarController import CalendarController
 from models.controllers.ToolController import ToolController
 
@@ -23,6 +24,11 @@ class HireToolWindow(tk.Toplevel):
         self.listOfDatesWidget=tk.Listbox(self,font=self.FONT_TYPE, selectmode=tk.MULTIPLE)
         self.updateListOfDates()
         self.listOfDatesWidget.bind('<<ListboxSelect>>', self.currentSelectedDates)
+        self.dispatchFrame=tk.Frame(self)
+        self.dispatchLabel=tk.Label(self.dispatchFrame,text="Hire dispatch driver: ",font=self.FONT_TYPE)
+        self.var=tk.BooleanVar()
+        self.dispatchCheckButton=tk.Checkbutton(self.dispatchFrame,font=self.FONT_TYPE,variable=self.var)
+
         self.bookButton=tk.Button(self,text="BOOK TOOL",font=self.FONT_TYPE, command=self.bookButtonClick)
 
         self.scrollbar = tk.Scrollbar(self)
@@ -30,7 +36,10 @@ class HireToolWindow(tk.Toplevel):
         self.scrollbar.config(command=self.listOfDatesWidget.yview)
 
         self.listOfDatesWidget.grid(row=0, column=0)
-        self.bookButton.grid(row=1, column=0)
+        self.bookButton.grid(row=2, column=0)
+        self.dispatchLabel.pack(side=tk.LEFT)
+        self.dispatchCheckButton.pack(side=tk.RIGHT)
+        self.dispatchFrame.grid(row=1)
         self.scrollbar.grid(row=0, column=1, stick="NSWE")
 
 
@@ -41,7 +50,6 @@ class HireToolWindow(tk.Toplevel):
             self.listOfDatesWidget.insert(tk.END, tmp)
 
     def currentSelectedDates(self, evt):
-        #TODO: IF U CAN FIND TIME LEARN LAMBDA TO CLEAR SELECTION!
         values = [self.listOfDatesWidget.get(idx) for idx in self.listOfDatesWidget.curselection() if self.listOfDatesWidget.get(idx).split('_')[1]=="FREE"]
         if(values.__len__()>3):
             messagebox.showinfo("TO MANY DAYS","YOU CAN ONLY PICK 3 DAYS AT THE SAME TIME")
@@ -56,12 +64,14 @@ class HireToolWindow(tk.Toplevel):
             for value in values:
                 date = value.split('_')[0]
                 toolTmp.book(datetime.strptime(date,"%Y-%m-%d").date(),self.loggedUser)
-               
+
             price=price+(values.__len__()*toolTmp.priceDay)
             message="Price: "+str("%.2f" % price)
-            if(messagebox.showinfo("Bill for "+self.loggedUser,message)):
-                self.destroy()
-                self.owner.updateUserToolsList()
+            messageWindow=MessageWindow(self.loggedUser,price,self.var,self)
+            self.withdraw()
+            messageWindow.wait_window()
+            self.destroy()
+            self.owner.updateUserToolsList()
 
 
 #------------------------------------------------------------------------------------------------------------------------------------

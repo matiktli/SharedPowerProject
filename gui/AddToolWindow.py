@@ -1,8 +1,5 @@
 import tkinter as tk
-from tkinter import filedialog
-from PIL import Image, ImageTk
-
-import os
+from tkinter import filedialog, messagebox
 
 from models.ToolModel import Tool
 from models.controllers.ImageController import ImageController
@@ -57,12 +54,13 @@ class AddToolWindow(tk.Toplevel):
         self.addButton.grid(row=3,column=1)
 
     def clickAddButton(self):
-        tool=Tool(self.toolNameEntry.get(),self.loggedUser,float(self.priceDayEntry.get()),float(self.priceHalfEntry.get()))
-        tool.saveToolToDatabase()
-        tool.setDescription(self.descEntry.get())
-        ImageController().savePhotoOfTool(self.filename,self.toolNameEntry.get())
-        self.destroy()
-        self.owner.updateAllToolsList()
+        if (self.conditionChecker()):
+            tool=Tool(self.toolNameEntry.get(),self.loggedUser,float(self.priceDayEntry.get()),float(self.priceHalfEntry.get()))
+            tool.saveToolToDatabase()
+            tool.setDescription(self.descEntry.get())
+            ImageController().savePhotoOfTool(self.filename,self.toolNameEntry.get())
+            self.destroy()
+            self.owner.updateAllToolsList()
 
     def addPhotoClick(self,eve):
         print("BAM")
@@ -73,6 +71,14 @@ class AddToolWindow(tk.Toplevel):
             self.photoLabel1.config(image=self.tmpPhoto)
             self.photoLabel1.image=self.tmpPhoto
             print("Photo label upgraded")
+
+    def conditionChecker(self):
+        if(self.toolNameEntry.get() and self.priceDayEntry.get() and self.priceHalfEntry.get()
+           and self.descEntry and self.filename and self.tmpPhoto):
+            return True
+        else:
+            messagebox.showinfo("ERROR","YOU MUST:\n-FILL ALL ENTRY FIELDS\n-ADD PHOTO")
+            return False
 
 
 

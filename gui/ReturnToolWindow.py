@@ -26,7 +26,7 @@ class ReturnToolWindow(tk.Toplevel):
 
         self.dispatchFrame=tk.Frame(self.textFrame)
         self.dispatchLabel=tk.Label(self.dispatchFrame,text="Hire dispatch driver: ", font=self.FONT_TYPE)
-        self.dispatchRadio=tk.Radiobutton(self.dispatchFrame,text="", font=self.FONT_TYPE, variable=self.var, value=True)
+        self.dispatchCheckbutton=tk.Checkbutton(self.dispatchFrame, text="", font=self.FONT_TYPE, variable=self.var)
 
         self.returnButton=tk.Button(self,text="RETURN TOOL",font=self.FONT_TYPE, command=self.returnButtonClick)
 
@@ -34,7 +34,7 @@ class ReturnToolWindow(tk.Toplevel):
         self.descriptionEntry.pack(side=tk.LEFT)
 
         self.dispatchLabel.pack(side=tk.LEFT, padx=5, pady=5)
-        self.dispatchRadio.pack(side=tk.LEFT)
+        self.dispatchCheckbutton.pack(side=tk.LEFT)
 
         self.tmpPhoto=ImageController().getPhotoOfTool(self.selectedTool)
         self.photoLabel=tk.Label(self,image=self.tmpPhoto)
@@ -50,7 +50,7 @@ class ReturnToolWindow(tk.Toplevel):
     def returnButtonClick(self):
         tool=ToolController().findTool(self.selectedTool)
         desc=self.descriptionEntry.get()
-        if(desc and self.tmpPhoto):
+        if(self.conditionChecker()):
             tool.setDescription(desc)
             result = tool.giveBack(datetime.today().date(), self.loggedUser)
             message="EXTRA DAYS: {0}\nEXTRA BILL ADDED: {1}\nDRIVER HIRED: {2}".format(result[0],result[1],self.var.get())
@@ -59,7 +59,7 @@ class ReturnToolWindow(tk.Toplevel):
                 self.destroy()
                 self.owner.updateUserToolsList()
         else:
-            messagebox.showinfo("ERROR","YOU MUST DESCRIBE CURRENT CONDITION OF TOOL")
+            messagebox.showinfo("ERROR","YOU MUST:\n-DESCRIBE CURRENT CONDITION\n-AND ADD THE CURRENT PHOTO")
 
     def photoLabelClick(self,eve):
         self.filename = filedialog.askopenfilename(initialdir="/home/matikitli/Pulpit/SharedPowerPhotos/",
@@ -70,6 +70,12 @@ class ReturnToolWindow(tk.Toplevel):
             self.photoLabel.config(image=self.tmpPhoto)
             self.photoLabel.image = self.tmpPhoto
             print("Photo label upgraded")
+
+    def conditionChecker(self):
+        if(self.descriptionEntry.get() and self.filename and self.tmpPhoto):
+            return True
+        else:return False
+
 
 #------------------------------------------------------------------------------------------------------------------------------------
 

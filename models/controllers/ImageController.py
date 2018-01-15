@@ -39,4 +39,4 @@ class ImageController():
         return widgetPhoto
 
     def getDefaultPhoto(self):
-        return ImageTk.PhotoImage(file=self.PATH_TO_RESOURCES + "AddPhotoIcon" + ".ppm")
+        return ImageTk.PhotoImage(file=self.PATH_TO_RESOURCES + "AddPhotoIcon" + ".png")

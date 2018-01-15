@@ -57,6 +57,7 @@ class Tool():
             extraCharge=dif*self.priceDay*2
             newCharge = self.userController.getUserCurrentCharge(userName) + extraCharge
             self.userController.addChargeForUser(newCharge, userName)
+        else: dif=0
         return (dif, extraCharge)
 
     def getDescription(self):
