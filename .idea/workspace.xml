@@ -7,18 +7,6 @@
     <list default="true" id="a981a803-f053-4c34-a492-07cc55faa24d" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/Creator.py" afterPath="$PROJECT_DIR$/config/Creator.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/DatabaseCreator.py" afterPath="$PROJECT_DIR$/config/DatabaseCreator.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gui/AddToolWindow.py" afterPath="$PROJECT_DIR$/gui/AddToolWindow.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gui/HireToolWindow.py" afterPath="$PROJECT_DIR$/gui/HireToolWindow.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gui/MainWindow.py" afterPath="$PROJECT_DIR$/gui/MainWindow.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gui/MessageWindow.py" afterPath="$PROJECT_DIR$/gui/MessageWindow.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gui/ReturnToolWindow.py" afterPath="$PROJECT_DIR$/gui/ReturnToolWindow.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/ToolModel.py" afterPath="$PROJECT_DIR$/models/ToolModel.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/controllers/CalendarController.py" afterPath="$PROJECT_DIR$/models/controllers/CalendarController.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/controllers/ImageController.py" afterPath="$PROJECT_DIR$/models/controllers/ImageController.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/controllers/ToolController.py" afterPath="$PROJECT_DIR$/models/controllers/ToolController.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/controllers/UserController.py" afterPath="$PROJECT_DIR$/models/controllers/UserController.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -61,7 +49,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainWindow.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MainWindow.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gui/MainWindow.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="336">
@@ -69,6 +57,16 @@
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="72">
+              <caret line="4" column="5" lean-forward="false" selection-start-line="4" selection-start-column="5" selection-end-line="4" selection-end-column="5" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -158,8 +156,8 @@
         <option value="$PROJECT_DIR$/gui/HireToolWindow.py" />
         <option value="$PROJECT_DIR$/models/controllers/UserController.py" />
         <option value="$PROJECT_DIR$/models/ToolModel.py" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/gui/MainWindow.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -717,14 +715,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="918">
-          <caret line="51" column="9" lean-forward="false" selection-start-line="51" selection-start-column="9" selection-end-line="51" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gui/HireToolWindow.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="342">
@@ -762,6 +752,14 @@
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="4" column="5" lean-forward="false" selection-start-line="4" selection-start-column="5" selection-end-line="4" selection-end-column="5" />
+          <folding />
         </state>
       </provider>
     </entry>
