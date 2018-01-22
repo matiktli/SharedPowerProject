@@ -7,6 +7,7 @@ from PIL import ImageTk
 from config import Creator
 from gui.MainWindow import MainWindow
 from models.UserModel import User
+from models.controllers.CalendarController import CalendarController
 from models.controllers.UserController import UserController
 
 
@@ -64,6 +65,7 @@ class App(object):
 
         except:
             messagebox.showinfo("ERROR","IDK ERR")
+
 
 
 root=tk.Tk()

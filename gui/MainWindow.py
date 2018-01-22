@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
+from config.Creator import WholeCreator
 from gui.AddToolWindow import AddToolWindow
 from gui.HireToolWindow import HireToolWindow
 from gui.ReturnToolWindow import ReturnToolWindow
@@ -155,11 +156,7 @@ class MainWindow(tk.Toplevel):
         ReturnToolWindow(self.loggedUser,toolName,self)
 
     def iluminatiFunction(self, eve):
-        users=UserController().findAllUsers()
-        message=""
-        for user in users:
-            message=message+user.name + " current charge is: "+str(user.charge)+"\n"
-        messagebox.showinfo("ILUMINATI IS HERE!",message)
+        messagebox.showinfo("ILLUMINATI IS HERE!",UserController().wholeUsersCharge())
 
 #------------------------------------------------------------------------------------------------------------------------------------
 

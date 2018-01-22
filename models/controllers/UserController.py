@@ -1,7 +1,5 @@
-import pymysql
-
 from config.ConnectorMysql import Connector
-
+from models.controllers.CalendarController import CalendarController
 
 
 class UserController:
@@ -83,3 +81,12 @@ class UserController:
         sql = """UPDATE USERS SET CHARGE = %s WHERE NAME='%s'""" % (charge+old,username)
         self.cursor.execute(sql)
         self.database.commit()
+
+    def wholeUsersCharge(self):
+        if(CalendarController().periodTimeCollector(30)):
+            users = self.findAllUsers()
+            message = ""
+            for user in users:
+                message = message + user.name + " current charge is: " + str(user.charge) + "\n"
+            return message
+        return "THERE MUST BE A MONTH DIF"

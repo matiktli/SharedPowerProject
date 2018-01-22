@@ -1,7 +1,4 @@
 from config.DatabaseCreator import DatabaseCreator
-
-#TABLE GENERATOR
-#-----------------
 from models.controllers.CalendarController import CalendarController
 
 
@@ -10,6 +7,7 @@ class WholeCreator():
     def __init__(self):
         creator=DatabaseCreator()
         calendarController=CalendarController()
+        calendarController.PERIOD=int(input("What is the PERIOD? \n"))
         stat=True
         if(stat):
             if(stat): # DROP
@@ -17,6 +15,7 @@ class WholeCreator():
                 creator.dropTableUsers()
                 creator.dropTableTools()
                 print("Databases DROPED")
+                input("Press Enter to continue...")
 
             if(stat): #CREATE
                 creator.createTableCalendar()
@@ -24,6 +23,7 @@ class WholeCreator():
                 creator.createTableUsers()
                 creator.createTableTools()
                 print("Databases CREATED")
+                input("Press Enter to continue...")
 
             if(stat): #FILL
                 creator.fillTableCalendar()
@@ -31,3 +31,4 @@ class WholeCreator():
                 creator.fillTableTools()
                 creator.fillPhotos()
                 print("Databases FILLED")
+                input("Press Enter to continue...")
