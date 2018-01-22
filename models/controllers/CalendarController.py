@@ -1,14 +1,13 @@
-from datetime import datetime, date, time,timedelta
 import datetime as dt
+from datetime import datetime, timedelta
 
 from apt.package import unicode
 
 from config.ConnectorMysql import Connector
 
 
-
 class CalendarController:
-    PERIOD=15
+    PERIOD=14
 
     def __init__(self):
         self.connector = Connector()
@@ -100,3 +99,13 @@ class CalendarController:
             self.database.commit()
         except:
             print("ERROR WHILE RETURNING A TOOL")
+
+    def periodTimeCollector(self,dayToAdd=0):
+        today = dt.date.today()+timedelta(dayToAdd)
+        firstDay=datetime.strptime(self.getAllColumns()[0],"%Y-%m-%d").date()
+        dif =(today - firstDay).days
+        if(dif%30 == 0):
+            return True
+        return False
+
+
